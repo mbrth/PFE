@@ -2,6 +2,7 @@
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, Radar } from 'recharts';
 import { MOCKED_COURSES } from '../constants';
+import ImpactTrajectoryCard from './ImpactTrajectoryCard';
 
 interface DashboardProps {
   isDark?: boolean;
@@ -102,6 +103,11 @@ const Dashboard: React.FC<DashboardProps> = ({ isDark: propIsDark, search = '' }
             </div>
           </div>
         ))}
+      </div>
+
+      {/* Impact Trajectory Card - Premium Component */}
+      <div>
+        <ImpactTrajectoryCard isDark={isDark} />
       </div>
 
       {/* Analytics Section */}

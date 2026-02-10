@@ -114,6 +114,172 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
         </div>
       </section>
 
+      {/* Pricing Section */}
+      <section className="max-w-7xl mx-auto px-6 py-20">
+        <div className="text-center mb-16 animate-in fade-in duration-700">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 border border-emerald-100 rounded-full mb-6">
+            <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+            <span className="text-[10px] font-black text-emerald-700 uppercase tracking-widest italic">Plans adaptés à votre parcours</span>
+          </div>
+          <h2 className="text-5xl font-black text-slate-900 mb-4 tracking-tighter">
+            Investissez dans votre impact.
+          </h2>
+          <p className="text-lg text-slate-500 max-w-2xl mx-auto">
+            De l'exploration individuelle à la transformation d'équipe complète. Choisissez le plan qui correspond à votre ambition.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Plan Explorateur */}
+          <div className="group rounded-[2rem] border border-slate-200 p-8 hover:shadow-2xl hover:border-indigo-200 transition-all duration-500 bg-white">
+            <div className="mb-8">
+              <h3 className="text-2xl font-black text-slate-900 mb-2">Explorateur</h3>
+              <p className="text-sm text-slate-500">Pour débuter votre transition</p>
+            </div>
+            <div className="mb-8">
+              <div className="flex items-baseline gap-1">
+                <span className="text-4xl font-black text-slate-900">Gratuit</span>
+                <span className="text-sm text-slate-500">/mois</span>
+              </div>
+              <p className="text-xs text-slate-400 mt-2">Pas de carte bancaire requise</p>
+            </div>
+            <button className="w-full py-3 px-6 bg-slate-100 text-slate-900 rounded-xl font-bold hover:bg-slate-200 transition-all mb-8">
+              Commencer gratuitement
+            </button>
+            <div className="space-y-3 border-t border-slate-100 pt-8">
+              <div className="flex items-center gap-3">
+                <i className="fa-solid fa-check text-emerald-500 text-sm"></i>
+                <span className="text-sm text-slate-700">Accès à 50+ formations</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <i className="fa-solid fa-check text-emerald-500 text-sm"></i>
+                <span className="text-sm text-slate-700">Bilan IA 1x/mois</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <i className="fa-solid fa-check text-emerald-500 text-sm"></i>
+                <span className="text-sm text-slate-700">Mesure CO2 personnelle</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <i className="fa-solid fa-check text-emerald-500 text-sm"></i>
+                <span className="text-sm text-slate-700">Certificats numériques</span>
+              </div>
+              <div className="flex items-center gap-3 opacity-40">
+                <i className="fa-solid fa-xmark text-slate-400 text-sm"></i>
+                <span className="text-sm text-slate-700">Mentorship personnalisé</span>
+              </div>
+              <div className="flex items-center gap-3 opacity-40">
+                <i className="fa-solid fa-xmark text-slate-400 text-sm"></i>
+                <span className="text-sm text-slate-700">API & Intégrations</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Plan Professionnel - Featured */}
+          <div className="group rounded-[2rem] border-2 border-indigo-600 p-8 shadow-2xl shadow-indigo-100 transition-all duration-500 bg-gradient-to-br from-indigo-50 to-white relative transform md:scale-105 md:-translate-y-4">
+            <div className="absolute -top-4 left-8 bg-indigo-600 text-white px-4 py-1 rounded-full text-[10px] font-black">RECOMMANDÉ</div>
+            <div className="mb-8">
+              <h3 className="text-2xl font-black text-slate-900 mb-2">Professionnel</h3>
+              <p className="text-sm text-slate-600 font-bold">Pour les individus motivés</p>
+            </div>
+            <div className="mb-8">
+              <div className="flex items-baseline gap-1">
+                <span className="text-4xl font-black text-indigo-600">14€</span>
+                <span className="text-sm text-slate-600">/mois</span>
+              </div>
+              <p className="text-xs text-slate-500 mt-2">Facturé annuellement : 168€</p>
+            </div>
+            <button onClick={onStart} className="w-full py-3 px-6 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition-all mb-8 shadow-lg shadow-indigo-200">
+              Débuter ma transformation
+            </button>
+            <div className="space-y-3 border-t border-indigo-200 pt-8">
+              <div className="flex items-center gap-3">
+                <i className="fa-solid fa-check text-indigo-600 text-sm"></i>
+                <span className="text-sm text-slate-700"><strong>Tout du plan Explorateur</strong></span>
+              </div>
+              <div className="flex items-center gap-3">
+                <i className="fa-solid fa-check text-indigo-600 text-sm"></i>
+                <span className="text-sm text-slate-700">200+ formations avancées</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <i className="fa-solid fa-check text-indigo-600 text-sm"></i>
+                <span className="text-sm text-slate-700">Bilan IA illimité</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <i className="fa-solid fa-check text-indigo-600 text-sm"></i>
+                <span className="text-sm text-slate-700">Mentorat par experts</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <i className="fa-solid fa-check text-indigo-600 text-sm"></i>
+                <span className="text-sm text-slate-700">Coaching de carrière</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <i className="fa-solid fa-check text-indigo-600 text-sm"></i>
+                <span className="text-sm text-slate-700">Badge "Éco-Architecte"</span>
+              </div>
+              <div className="flex items-center gap-3 opacity-40">
+                <i className="fa-solid fa-xmark text-slate-400 text-sm"></i>
+                <span className="text-sm text-slate-700">API & Intégrations</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Plan Entreprise */}
+          <div className="group rounded-[2rem] border border-slate-200 p-8 hover:shadow-2xl hover:border-slate-400 transition-all duration-500 bg-white">
+            <div className="mb-8">
+              <h3 className="text-2xl font-black text-slate-900 mb-2">Entreprise</h3>
+              <p className="text-sm text-slate-500">Pour les équipes de 10+</p>
+            </div>
+            <div className="mb-8">
+              <div className="flex items-baseline gap-1">
+                <span className="text-4xl font-black text-slate-900">Custom</span>
+              </div>
+              <p className="text-xs text-slate-400 mt-2">À partir de 500€/mois</p>
+            </div>
+            <button className="w-full py-3 px-6 bg-slate-900 text-white rounded-xl font-bold hover:bg-indigo-600 transition-all mb-8">
+              Demander une démo
+            </button>
+            <div className="space-y-3 border-t border-slate-100 pt-8">
+              <div className="flex items-center gap-3">
+                <i className="fa-solid fa-check text-emerald-500 text-sm"></i>
+                <span className="text-sm text-slate-700"><strong>Tout du plan Pro</strong></span>
+              </div>
+              <div className="flex items-center gap-3">
+                <i className="fa-solid fa-check text-emerald-500 text-sm"></i>
+                <span className="text-sm text-slate-700">Multicompte & rôles</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <i className="fa-solid fa-check text-emerald-500 text-sm"></i>
+                <span className="text-sm text-slate-700">Tableaux de bord équipe</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <i className="fa-solid fa-check text-emerald-500 text-sm"></i>
+                <span className="text-sm text-slate-700">Formation & Onboarding</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <i className="fa-solid fa-check text-emerald-500 text-sm"></i>
+                <span className="text-sm text-slate-700">API & Intégrations</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <i className="fa-solid fa-check text-emerald-500 text-sm"></i>
+                <span className="text-sm text-slate-700">Support prioritaire 24/7</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <i className="fa-solid fa-check text-emerald-500 text-sm"></i>
+                <span className="text-sm text-slate-700">Gouvernance & audit</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Pricing Info */}
+        <div className="mt-16 p-8 bg-indigo-50 rounded-2xl border border-indigo-100 text-center">
+          <p className="text-slate-700 font-bold mb-2">💡 Conseil pour choisir</p>
+          <p className="text-sm text-slate-600">
+            <strong>Gratuit</strong> = Explorer l'IA responsable • <strong>Pro</strong> = Accélérer votre transition de carrière • <strong>Entreprise</strong> = Transformer toute votre organisation
+          </p>
+        </div>
+      </section>
+
       {/* Trust Section */}
       <section className="bg-slate-50 py-20 border-y border-slate-100">
         <div className="max-w-7xl mx-auto px-6">

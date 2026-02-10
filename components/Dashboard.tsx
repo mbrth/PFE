@@ -130,9 +130,7 @@ const Dashboard: React.FC<DashboardProps> = ({ isDark: propIsDark, search = '' }
 
             {/* Overlay Metrics */}
             <div 
-              className={`absolute inset-0 rounded-2xl p-6 bg-slate-900/90 backdrop-blur-sm transition-all duration-300 flex flex-col justify-center z-20 ${
-                showOverlay ? 'opacity-100' : 'opacity-0 pointer-events-none'
-              }`}
+              className={`absolute inset-0 rounded-2xl p-6 bg-slate-900/90 backdrop-blur-sm transition-all duration-300 flex flex-col justify-center z-20 ${showOverlay ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
             >
               <div className="space-y-2 text-white">
                 <div className="flex items-center justify-between text-[10px]">

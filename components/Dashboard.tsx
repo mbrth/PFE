@@ -1,8 +1,7 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, Radar } from 'recharts';
 import { MOCKED_COURSES } from '../constants';
-import ImpactTrajectoryCard from './ImpactTrajectoryCard';
 
 interface DashboardProps {
   isDark?: boolean;
@@ -43,6 +42,28 @@ const Dashboard: React.FC<DashboardProps> = ({ isDark: propIsDark, search = '' }
     { label: 'Maturité Profil', value: '74%', unit: 'Global', trend: '+14%', icon: 'fa-user-graduate', color: 'text-blue-500' },
   ];
 
+  // Impact Trajectory Data
+  const trajectoryData = {
+    mainGrade: 'A+',
+    trajectory: 'responsable',
+    lastDecisionImpact: 8,
+    fromGrade: 'A',
+    toGrade: 'A+',
+    progressPercent: 75,
+    co2: 2.4,
+    sovereignty: 92,
+    ethicsStatus: 'stable'
+  };
+
+  const [showOverlay, setShowOverlay] = useState(false);
+
+  const trajectoryColor = trajectoryData.trajectory === 'responsable' ? 'text-emerald-400' : 'text-amber-400';
+  const trajectoryLabel = trajectoryData.trajectory === 'responsable' ? 'Trajectoire responsable' : 'Trajectoire à ajuster';
+  const impactColor = trajectoryData.lastDecisionImpact >= 0 ? 'text-emerald-400' : 'text-amber-400';
+  const impactSign = trajectoryData.lastDecisionImpact >= 0 ? '+' : '';
+  const ethicsIcon = trajectoryData.ethicsStatus === 'stable' ? 'fa-minus' : trajectoryData.ethicsStatus === 'improving' ? 'fa-arrow-up' : 'fa-arrow-down';
+  const ethicsColor = trajectoryData.ethicsStatus === 'stable' ? 'text-slate-400' : trajectoryData.ethicsStatus === 'improving' ? 'text-emerald-500' : 'text-amber-500';
+
   // Prefer theme passed from parent; fallback to global stored theme
   const isDark = typeof propIsDark === 'boolean'
     ? propIsDark
@@ -50,10 +71,11 @@ const Dashboard: React.FC<DashboardProps> = ({ isDark: propIsDark, search = '' }
 
   return (
     <div className={`animate-in fade-in duration-700 space-y-8 pb-12 ${isDark ? 'bg-slate-900 text-slate-100' : ''}`}>
-      {/* Welcome Banner */}
+      {/* Welcome Banner with Trajectory */}
       <div className={`relative rounded-[2rem] p-6 md:p-8 lg:p-12 text-white shadow-2xl overflow-hidden group ${isDark ? 'bg-slate-800 shadow-slate-900/40' : 'bg-indigo-600 shadow-indigo-200'}`}>
-        <div className="relative z-10 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8">
-          <div className="space-y-4 max-w-xl">
+        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Left Content */}
+          <div className="lg:col-span-2 space-y-4">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur-md rounded-full border border-white/20">
                <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span>
                <span className="text-[10px] font-black uppercase tracking-widest text-white/80 italic">Analyse en temps réel</span>
@@ -66,16 +88,76 @@ const Dashboard: React.FC<DashboardProps> = ({ isDark: propIsDark, search = '' }
               Continuez ainsi pour atteindre le grade "Eco-Architecte Senior".
             </p>
           </div>
-          <div className="flex gap-4 sm:gap-8 items-center">
-            <div className="text-center p-6 bg-white/5 backdrop-blur-md rounded-3xl border border-white/10 min-w-[120px]">
-              <p className="text-4xl font-black">A+</p>
-              <p className="text-[10px] font-bold uppercase text-indigo-200 tracking-tighter">Grade Impact</p>
+
+          {/* Right - Impact Trajectory */}
+          <div 
+            className="relative lg:col-span-1 bg-gradient-to-br from-white/10 to-white/5 rounded-2xl p-6 border border-white/10 cursor-pointer transition-all duration-300 group/card"
+            onMouseEnter={() => setShowOverlay(true)}
+            onMouseLeave={() => setShowOverlay(false)}
+          >
+            {/* Header */}
+            <div className="space-y-3">
+              <p className="text-[9px] font-black text-white/60 uppercase tracking-widest">Maturité globale</p>
+              <div className="flex items-baseline gap-3">
+                <span className="text-4xl font-black text-white">{trajectoryData.mainGrade}</span>
+                <span className={`text-[10px] font-bold ${trajectoryColor} uppercase tracking-wider`}>{trajectoryLabel}</span>
+              </div>
             </div>
-            <div className="text-center p-6 bg-white/5 backdrop-blur-md rounded-3xl border border-white/10 min-w-[120px]">
-              <p className="text-4xl font-black">92</p>
-              <p className="text-[10px] font-bold uppercase text-indigo-200 tracking-tighter">Score Souverain</p>
+
+            {/* Last Decision Impact */}
+            <div className="space-y-1 mt-4">
+              <p className="text-[8px] font-bold text-white/50 uppercase tracking-widest">Dernière décision</p>
+              <div className="flex items-center gap-2">
+                <span className={`text-xs font-black ${impactColor}`}>{impactSign}{Math.abs(trajectoryData.lastDecisionImpact)}%</span>
+                <span className="text-[8px] text-white/40">Impact</span>
+                <i className={`fa-solid fa-arrow-${trajectoryData.lastDecisionImpact >= 0 ? 'up' : 'down'} text-xs ${impactColor} opacity-60`}></i>
+              </div>
             </div>
-            
+
+            {/* Grade Progression Bar */}
+            <div className="space-y-2 mt-4">
+              <div className="flex items-center justify-between">
+                <span className="text-[8px] font-bold text-white/50">{trajectoryData.fromGrade} → {trajectoryData.toGrade}</span>
+                <span className="text-[8px] font-bold text-white/40">{trajectoryData.progressPercent}%</span>
+              </div>
+              <div className="h-1 bg-white/10 rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-gradient-to-r from-indigo-300 to-emerald-300 rounded-full transition-all duration-1000"
+                  style={{ width: `${trajectoryData.progressPercent}%` }}
+                ></div>
+              </div>
+            </div>
+
+            {/* Overlay Metrics */}
+            <div 
+              className={`absolute inset-0 rounded-2xl p-6 bg-slate-900/90 backdrop-blur-sm transition-all duration-300 flex flex-col justify-center z-20 ${
+                showOverlay ? 'opacity-100' : 'opacity-0 pointer-events-none'
+              }`}
+            >
+              <div className="space-y-2 text-white">
+                <div className="flex items-center justify-between text-[10px]">
+                  <div className="flex items-center gap-2">
+                    <i className="fa-solid fa-leaf text-emerald-400"></i>
+                    <span className="font-bold">CO₂</span>
+                  </div>
+                  <span className="font-black text-emerald-400">{trajectoryData.co2}kg</span>
+                </div>
+                <div className="flex items-center justify-between text-[10px]">
+                  <div className="flex items-center gap-2">
+                    <i className="fa-solid fa-shield-halved text-indigo-300"></i>
+                    <span className="font-bold">Souveraineté</span>
+                  </div>
+                  <span className="font-black text-indigo-300">{trajectoryData.sovereignty}pts</span>
+                </div>
+                <div className="flex items-center justify-between text-[10px]">
+                  <div className="flex items-center gap-2">
+                    <i className={`fa-solid ${ethicsIcon} ${ethicsColor}`}></i>
+                    <span className="font-bold">Éthique</span>
+                  </div>
+                  <span className={`font-black capitalize ${ethicsColor}`}>{trajectoryData.ethicsStatus}</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div className="absolute -top-24 -right-24 w-96 h-96 bg-indigo-500 rounded-full blur-[100px] opacity-50 group-hover:scale-110 transition-transform duration-1000"></div>
@@ -103,11 +185,6 @@ const Dashboard: React.FC<DashboardProps> = ({ isDark: propIsDark, search = '' }
             </div>
           </div>
         ))}
-      </div>
-
-      {/* Impact Trajectory Card - Premium Component */}
-      <div>
-        <ImpactTrajectoryCard isDark={isDark} />
       </div>
 
       {/* Analytics Section */}

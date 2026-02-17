@@ -11,6 +11,8 @@
     "server:start": "node server/index.js"
   },
   "dependencies": {
+    "@fontsource/inter": "^5.2.8",
+    "@fortawesome/fontawesome-free": "^7.2.0",
     "@google/genai": "^1.38.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",

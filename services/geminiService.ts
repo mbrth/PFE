@@ -1,7 +1,6 @@
-
 import { Course } from "../types";
 
-const PROXY_URL = (import.meta as any).env?.VITE_API_PROXY || 'http://localhost:3001/api/openai';
+const PROXY_URL = (import.meta as any).env?.VITE_API_PROXY || 'http://localhost:3001/api/gemini';
 
 export const analyzeOnboardingProfile = async (answers: any): Promise<string> => {
   try {
@@ -14,6 +13,7 @@ export const analyzeOnboardingProfile = async (answers: any): Promise<string> =>
     const json = await res.json();
     return json?.text ?? "Apprenant Engagé";
   } catch (error) {
+    console.error("Gemini Proxy Error:", error);
     return "Apprenant Numérique Responsable";
   }
 };
@@ -42,7 +42,7 @@ export const getOrientationAdvice = async (userPrompt: string, availableCourses:
     const json = await res.json();
     return json?.text ?? "Erreur de génération de conseil.";
   } catch (error) {
-    console.error("Proxy Error:", error);
+    console.error("Gemini Proxy Error:", error);
     return "L'expert IA est momentanément indisponible.";
   }
 };

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { analyzeOnboardingProfile } from '../services/geminiService';
 
@@ -21,6 +20,7 @@ const AIOnboarding: React.FC<AIOnboardingProps> = ({ userName, onComplete }) => 
   const handleFinish = async () => {
     setLoading(true);
     const persona = await analyzeOnboardingProfile(answers);
+    // Simulate processing time for better UX
     setTimeout(() => {
       setLoading(false);
       onComplete(persona);
@@ -30,6 +30,7 @@ const AIOnboarding: React.FC<AIOnboardingProps> = ({ userName, onComplete }) => 
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 md:p-6">
       <div className="bg-white max-w-2xl w-full rounded-3xl shadow-xl border border-slate-200 overflow-hidden">
+        {/* Progress Bar */}
         <div className="h-2 bg-slate-100 w-full">
           <div 
             className="h-full bg-indigo-600 transition-all duration-500" 
@@ -43,45 +44,45 @@ const AIOnboarding: React.FC<AIOnboardingProps> = ({ userName, onComplete }) => 
               <div className="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center text-2xl mb-6">
                 <i className="fa-solid fa-hand-wave"></i>
               </div>
-              <h2 className="text-3xl font-black text-slate-900 tracking-tight">Bienvenue {userName} !</h2>
+              <h2 className="text-3xl font-black text-slate-900 tracking-tight">Welcome {userName}!</h2>
               <p className="text-slate-500 leading-relaxed">
-                Pour personnaliser votre expérience EcoOrient, nous allons définir votre profil professionnel en quelques secondes grâce à notre IA.
+                To personalize your EcoOrient experience, we'll define your professional profile in a few seconds using our AI.
               </p>
               <button onClick={nextStep} className="w-full py-4 bg-indigo-600 text-white rounded-xl font-bold shadow-lg hover:bg-indigo-700 transition-all">
-                C'est parti <i className="fa-solid fa-arrow-right ml-2"></i>
+                Let's go <i className="fa-solid fa-arrow-right ml-2"></i>
               </button>
             </div>
           )}
 
           {step === 2 && (
             <div className="space-y-6 animate-in fade-in slide-in-from-right-4">
-              <h3 className="text-xl font-bold text-slate-800 tracking-tight">Quelles sont vos compétences actuelles ?</h3>
-              <p className="text-sm text-slate-400">Listez vos outils, langages ou domaines de prédilection.</p>
+              <h3 className="text-xl font-bold text-slate-800 tracking-tight">What are your current skills?</h3>
+              <p className="text-sm text-slate-400">List your tools, languages, or preferred areas of expertise.</p>
               <textarea 
                 className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none h-28 md:h-32 text-sm"
-                placeholder="Ex: Python, Gestion de projet, Excel, React..."
+                placeholder="Ex: Python, Project Management, Excel, React..."
                 value={answers.skills}
                 onChange={e => setAnswers({...answers, skills: e.target.value})}
               />
               <button onClick={nextStep} className="w-full py-4 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition-all">
-                Suivant
+                Next
               </button>
             </div>
           )}
 
           {step === 3 && (
             <div className="space-y-6 animate-in fade-in slide-in-from-right-4">
-              <h3 className="text-xl font-bold text-slate-800 tracking-tight">Quel est votre objectif professionnel ?</h3>
-              <p className="text-sm text-slate-400">Où vous voyez-vous dans 2 ans ?</p>
+              <h3 className="text-xl font-bold text-slate-800 tracking-tight">What is your professional goal?</h3>
+              <p className="text-sm text-slate-400">Where do you see yourself in 2 years?</p>
               <input 
                 type="text"
                 className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm"
-                placeholder="Ex: Devenir Architecte Cloud, Spécialiste IA..."
+                placeholder="Ex: Become a Cloud Architect, AI Specialist..."
                 value={answers.goal}
                 onChange={e => setAnswers({...answers, goal: e.target.value})}
               />
               <div className="grid grid-cols-1 gap-3 mt-4">
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Priorité majeure :</p>
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Major Priority:</p>
                 <div className="flex gap-2">
                   {['ecology', 'sovereignty', 'performance'].map(p => (
                     <button 
@@ -97,7 +98,7 @@ const AIOnboarding: React.FC<AIOnboardingProps> = ({ userName, onComplete }) => 
                 </div>
               </div>
               <button onClick={nextStep} className="w-full py-4 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition-all">
-                Suivant
+                Next
               </button>
             </div>
           )}
@@ -108,15 +109,15 @@ const AIOnboarding: React.FC<AIOnboardingProps> = ({ userName, onComplete }) => 
                 <i className={`fa-solid ${loading ? 'fa-spinner animate-spin' : 'fa-check'}`}></i>
               </div>
               <div>
-                <h3 className="text-2xl font-black text-slate-900 mb-2">Analyse IA en cours...</h3>
-                <p className="text-slate-500 text-sm">Nous composons votre profil numérique responsable sur mesure.</p>
+                <h3 className="text-2xl font-black text-slate-900 mb-2">AI Analysis in progress...</h3>
+                <p className="text-slate-500 text-sm">We are composing your custom responsible digital profile.</p>
               </div>
               <button 
                 onClick={handleFinish}
                 disabled={loading}
                 className="w-full py-4 bg-slate-900 text-white rounded-xl font-bold hover:bg-indigo-600 transition-all disabled:opacity-50"
               >
-                {loading ? 'Analyse...' : 'Finaliser mon profil'}
+                {loading ? 'Analyzing...' : 'Finalize my profile'}
               </button>
             </div>
           )}

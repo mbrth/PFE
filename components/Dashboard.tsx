@@ -1,22 +1,23 @@
-
-import React, { useState } from 'react';
+import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, Radar } from 'recharts';
 import { MOCKED_COURSES } from '../constants';
+import StatCard from './Dashboard/StatCard';
+import WelcomeBanner from './Dashboard/WelcomeBanner';
 
 interface DashboardProps {
   isDark?: boolean;
   search?: string;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ isDark: propIsDark, search = '' }) => {
+const Dashboard: React.FC<DashboardProps> = ({ isDark, search = '' }) => {
   const filteredCourses = MOCKED_COURSES.filter(c => {
-    const q = (search || '').trim().toLowerCase();
+    const q = search.trim().toLowerCase();
     if (!q) return true;
     return (
       c.title.toLowerCase().includes(q) ||
       c.provider.toLowerCase().includes(q) ||
       c.category.toLowerCase().includes(q) ||
-      c.skills.join(' ').toLowerCase().includes(q)
+      c.skills.some(skill => skill.toLowerCase().includes(q))
     );
   });
 
@@ -28,21 +29,20 @@ const Dashboard: React.FC<DashboardProps> = ({ isDark: propIsDark, search = '' }
   }));
 
   const radarData = [
-    { subject: 'Énergie', A: 85 },
-    { subject: 'Souveraineté', A: 70 },
-    { subject: 'Éco-design', A: 65 },
-    { subject: 'RGPD', A: 90 },
-    { subject: 'Ethique IA', A: 75 },
+    { subject: 'Energy', A: 85 },
+    { subject: 'Sovereignty', A: 70 },
+    { subject: 'Eco-design', A: 65 },
+    { subject: 'GDPR', A: 90 },
+    { subject: 'AI Ethics', A: 75 },
   ];
 
   const stats = [
-    { label: 'Empreinte Moyenne', value: '4.2kg', unit: 'CO2e', trend: '-12%', icon: 'fa-leaf', color: 'text-emerald-500' },
-    { label: 'Indice Souveraineté', value: '88%', unit: 'Score', trend: '+5%', icon: 'fa-shield-halved', color: 'text-indigo-500' },
-    { label: 'Formations Actives', value: '03', unit: 'Cours', trend: 'Stable', icon: 'fa-book-sparkles', color: 'text-amber-500' },
-    { label: 'Maturité Profil', value: '74%', unit: 'Global', trend: '+14%', icon: 'fa-user-graduate', color: 'text-blue-500' },
+    { label: 'Avg Footprint', value: '4.2kg', unit: 'CO2e', trend: '-12%', icon: 'fa-leaf', color: 'text-emerald-500' },
+    { label: 'Sovereignty Index', value: '88%', unit: 'Score', trend: '+5%', icon: 'fa-shield-halved', color: 'text-indigo-500' },
+    { label: 'Active Courses', value: '03', unit: 'Courses', trend: 'Stable', icon: 'fa-book-sparkles', color: 'text-amber-500' },
+    { label: 'Profile Maturity', value: '74%', unit: 'Global', trend: '+14%', icon: 'fa-user-graduate', color: 'text-blue-500' },
   ];
 
-  // Impact Trajectory Data
   const trajectoryData = {
     mainGrade: 'A+',
     trajectory: 'responsable',
@@ -55,180 +55,67 @@ const Dashboard: React.FC<DashboardProps> = ({ isDark: propIsDark, search = '' }
     ethicsStatus: 'stable'
   };
 
-  const [showOverlay, setShowOverlay] = useState(false);
-
-  const trajectoryColor = trajectoryData.trajectory === 'responsable' ? 'text-emerald-400' : 'text-amber-400';
-  const trajectoryLabel = trajectoryData.trajectory === 'responsable' ? 'Trajectoire responsable' : 'Trajectoire à ajuster';
-  const impactColor = trajectoryData.lastDecisionImpact >= 0 ? 'text-emerald-400' : 'text-amber-400';
-  const impactSign = trajectoryData.lastDecisionImpact >= 0 ? '+' : '';
-  const ethicsIcon = trajectoryData.ethicsStatus === 'stable' ? 'fa-minus' : trajectoryData.ethicsStatus === 'improving' ? 'fa-arrow-up' : 'fa-arrow-down';
-  const ethicsColor = trajectoryData.ethicsStatus === 'stable' ? 'text-slate-400' : trajectoryData.ethicsStatus === 'improving' ? 'text-emerald-500' : 'text-amber-500';
-
-  // Prefer theme passed from parent; fallback to global stored theme
-  const isDark = typeof propIsDark === 'boolean'
-    ? propIsDark
-    : (typeof window !== 'undefined' && localStorage.getItem('themeDark') === 'true');
-
   return (
-    <div className={`animate-in fade-in duration-700 space-y-8 pb-12 ${isDark ? 'bg-slate-900 text-slate-100' : ''}`}>
-      {/* Welcome Banner with Trajectory */}
-      <div className={`relative rounded-[2rem] p-6 md:p-8 lg:p-12 text-white shadow-2xl overflow-hidden group ${isDark ? 'bg-slate-800 shadow-slate-900/40' : 'bg-indigo-600 shadow-indigo-200'}`}>
-        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Content */}
-          <div className="lg:col-span-2 space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur-md rounded-full border border-white/20">
-               <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span>
-               <span className="text-[10px] font-black uppercase tracking-widest text-white/80 italic">Analyse en temps réel</span>
-            </div>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tight leading-none">
-              Pilotez votre impact <br/><span className="text-indigo-200">et votre souveraineté.</span>
-            </h1>
-            <p className="text-indigo-100/80 text-sm leading-relaxed">
-              Vos choix de formation influencent directement l'indice de maturité numérique de votre profil. 
-              Continuez ainsi pour atteindre le grade "Eco-Architecte Senior".
-            </p>
-          </div>
+    <div className={`animate-in fade-in duration-700 space-y-8 pb-12 ${isDark ? 'text-slate-100' : ''}`}>
+      <WelcomeBanner isDark={isDark} trajectoryData={trajectoryData} />
 
-          {/* Right - Impact Trajectory */}
-          <div 
-            className="relative lg:col-span-1 bg-gradient-to-br from-white/10 to-white/5 rounded-2xl p-6 border border-white/10 cursor-pointer transition-all duration-300 group/card"
-            onMouseEnter={() => setShowOverlay(true)}
-            onMouseLeave={() => setShowOverlay(false)}
-          >
-            {/* Header */}
-            <div className="space-y-3">
-              <p className="text-[9px] font-black text-white/60 uppercase tracking-widest">Maturité globale</p>
-              <div className="flex items-baseline gap-3">
-                <span className="text-4xl font-black text-white">{trajectoryData.mainGrade}</span>
-                <span className={`text-[10px] font-bold ${trajectoryColor} uppercase tracking-wider`}>{trajectoryLabel}</span>
-              </div>
-            </div>
-
-            {/* Last Decision Impact */}
-            <div className="space-y-1 mt-4">
-              <p className="text-[8px] font-bold text-white/50 uppercase tracking-widest">Dernière décision</p>
-              <div className="flex items-center gap-2">
-                <span className={`text-xs font-black ${impactColor}`}>{impactSign}{Math.abs(trajectoryData.lastDecisionImpact)}%</span>
-                <span className="text-[8px] text-white/40">Impact</span>
-                <i className={`fa-solid fa-arrow-${trajectoryData.lastDecisionImpact >= 0 ? 'up' : 'down'} text-xs ${impactColor} opacity-60`}></i>
-              </div>
-            </div>
-
-            {/* Grade Progression Bar */}
-            <div className="space-y-2 mt-4">
-              <div className="flex items-center justify-between">
-                <span className="text-[8px] font-bold text-white/50">{trajectoryData.fromGrade} → {trajectoryData.toGrade}</span>
-                <span className="text-[8px] font-bold text-white/40">{trajectoryData.progressPercent}%</span>
-              </div>
-              <div className="h-1 bg-white/10 rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-gradient-to-r from-indigo-300 to-emerald-300 rounded-full transition-all duration-1000"
-                  style={{ width: `${trajectoryData.progressPercent}%` }}
-                ></div>
-              </div>
-            </div>
-
-            {/* Overlay Metrics */}
-            <div 
-              className={`absolute inset-0 rounded-2xl p-6 bg-slate-900/90 backdrop-blur-sm transition-all duration-300 flex flex-col justify-center z-20 ${showOverlay ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-            >
-              <div className="space-y-2 text-white">
-                <div className="flex items-center justify-between text-[10px]">
-                  <div className="flex items-center gap-2">
-                    <i className="fa-solid fa-leaf text-emerald-400"></i>
-                    <span className="font-bold">CO₂</span>
-                  </div>
-                  <span className="font-black text-emerald-400">{trajectoryData.co2}kg</span>
-                </div>
-                <div className="flex items-center justify-between text-[10px]">
-                  <div className="flex items-center gap-2">
-                    <i className="fa-solid fa-shield-halved text-indigo-300"></i>
-                    <span className="font-bold">Souveraineté</span>
-                  </div>
-                  <span className="font-black text-indigo-300">{trajectoryData.sovereignty}pts</span>
-                </div>
-                <div className="flex items-center justify-between text-[10px]">
-                  <div className="flex items-center gap-2">
-                    <i className={`fa-solid ${ethicsIcon} ${ethicsColor}`}></i>
-                    <span className="font-bold">Éthique</span>
-                  </div>
-                  <span className={`font-black capitalize ${ethicsColor}`}>{trajectoryData.ethicsStatus}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="absolute -top-24 -right-24 w-96 h-96 bg-indigo-500 rounded-full blur-[100px] opacity-50 group-hover:scale-110 transition-transform duration-1000"></div>
-        <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-emerald-500 rounded-full blur-[80px] opacity-30"></div>
-      </div>
-
-      {/* KPI Bento Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, i) => (
-          <div key={i} className={`${isDark ? 'bg-slate-800 border-slate-700 text-slate-100 hover:shadow-lg' : 'bg-white border border-slate-100 text-slate-900'} p-4 md:p-6 rounded-3xl shadow-sm hover:shadow-xl hover:translate-y-[-4px] transition-all duration-300`}>
-            <div className="flex items-center justify-between mb-4">
-              <div className={`w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center ${stat.color} text-xl shadow-inner`}>
-                <i className={`fa-solid ${stat.icon}`}></i>
-              </div>
-              <span className={`text-[10px] font-black px-2 py-1 rounded-full ${stat.trend.startsWith('+') ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-50 text-slate-400'}`}>
-                {stat.trend}
-              </span>
-            </div>
-            <div>
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">{stat.label}</p>
-              <div className="flex items-baseline gap-1">
-                 <span className="text-2xl font-black text-slate-900">{stat.value}</span>
-                 <span className="text-[10px] font-bold text-slate-400">{stat.unit}</span>
-              </div>
-            </div>
-          </div>
+          <StatCard key={i} {...stat} isDark={isDark} />
         ))}
       </div>
 
-      {/* Analytics Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Performance Comparison */}
         <div className={`${isDark ? 'bg-slate-800 border-slate-700 text-slate-100' : 'bg-white border border-slate-100 text-slate-900'} lg:col-span-2 p-4 md:p-8 rounded-[2.5rem] shadow-sm`}>
           <div className="flex justify-between items-center mb-10">
             <div>
-              <h3 className="text-xl font-black text-slate-900 flex items-center gap-2">
-                Comparatif de Performance
+              <h3 className="text-xl font-black flex items-center gap-2">
+                Performance Comparison
               </h3>
-              <p className="text-xs text-slate-400 font-medium">Analyse croisée CO2 vs Souveraineté par formation</p>
+              <p className="text-xs text-slate-400 font-medium">Cross-analysis CO2 vs Sovereignty by course</p>
             </div>
           </div>
           
           <div className="h-64 md:h-80">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={chartData} barGap={12} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={isDark ? "#334155" : "#f1f5f9"} />
                 <XAxis dataKey="name" fontSize={10} fontWeight={600} tickLine={false} axisLine={false} tick={{ fill: '#94a3b8' }} />
                 <YAxis fontSize={10} fontWeight={600} tickLine={false} axisLine={false} tick={{ fill: '#94a3b8' }} />
                 <Tooltip 
-                  cursor={{ fill: '#F8FAFC' }}
-                  contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1)' }}
+                  cursor={{ fill: isDark ? '#1e293b' : '#F8FAFC' }}
+                  contentStyle={{ 
+                    borderRadius: '16px', 
+                    border: 'none', 
+                    boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1)',
+                    backgroundColor: isDark ? '#1e293b' : '#ffffff',
+                    color: isDark ? '#f8fafc' : '#1e293b'
+                  }}
                   itemStyle={{ fontSize: '12px', fontWeight: 'bold' }}
                 />
                 <Bar dataKey="co2" name="CO2 (kg)" fill="#10b981" radius={[8, 8, 8, 8]} barSize={24} />
-                <Bar dataKey="sov" name="Souveraineté (%)" fill="#6366f1" radius={[8, 8, 8, 8]} barSize={24} />
+                <Bar dataKey="sov" name="Sovereignty (%)" fill="#6366f1" radius={[8, 8, 8, 8]} barSize={24} />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
 
+        {/* Ethical Profile */}
         <div className={`${isDark ? 'bg-slate-800 border-slate-700 text-slate-100' : 'bg-white border border-slate-100 text-slate-900'} p-8 rounded-[2.5rem] shadow-sm flex flex-col`}>
           <div className="mb-8">
-            <h3 className="text-xl font-black text-slate-900 flex items-center gap-2">
-               Profil Éthique
+            <h3 className="text-xl font-black flex items-center gap-2">
+               Ethical Profile
             </h3>
-            <p className="text-xs text-slate-400 font-medium">Vision holistique de votre engagement</p>
+            <p className="text-xs text-slate-400 font-medium">Holistic view of your commitment</p>
           </div>
           <div className="flex-1 flex items-center justify-center">
             <ResponsiveContainer width="100%" height={300}>
               <RadarChart cx="50%" cy="50%" outerRadius="80%" data={radarData}>
-                <PolarGrid stroke="#e2e8f0" />
+                <PolarGrid stroke={isDark ? "#334155" : "#e2e8f0"} />
                 <PolarAngleAxis dataKey="subject" fontSize={10} fontWeight={700} tick={{ fill: '#64748b' }} />
                 <Radar
-                  name="Moyenne Utilisateur"
+                  name="User Average"
                   dataKey="A"
                   stroke="#6366f1"
                   strokeWidth={3}

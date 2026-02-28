@@ -3,9 +3,10 @@ import React, { useState } from 'react';
 
 interface LandingPageProps {
   onStart: () => void;
+  onVisionImpact: () => void;
 }
 
-const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
+const LandingPage: React.FC<LandingPageProps> = ({ onStart, onVisionImpact }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
@@ -19,8 +20,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
           <span className="text-xl font-black text-slate-900 tracking-tighter">EcoOrient</span>
         </div>
         <div className="hidden md:flex items-center gap-8">
-          <a href="#features" className="text-sm font-bold text-slate-500 hover:text-indigo-600 transition-colors">Vision</a>
-          <a href="#impact" className="text-sm font-bold text-slate-500 hover:text-indigo-600 transition-colors">Impact</a>
+          <button onClick={onVisionImpact} className="text-sm font-bold text-slate-500 hover:text-indigo-600 transition-colors">Vision</button>
+          <button onClick={onVisionImpact} className="text-sm font-bold text-slate-500 hover:text-indigo-600 transition-colors">Impact</button>
           <button 
             onClick={onStart}
             className="px-6 py-2.5 bg-slate-900 text-white rounded-xl text-sm font-bold hover:bg-indigo-600 transition-all shadow-md"
@@ -38,8 +39,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
       {mobileOpen && (
         <div className="md:hidden px-6 pb-6">
           <div className="flex flex-col gap-3">
-            <a href="#features" className="text-base font-bold text-slate-700 py-2">Vision</a>
-            <a href="#impact" className="text-base font-bold text-slate-700 py-2">Impact</a>
+            <button onClick={onVisionImpact} className="text-base font-bold text-slate-700 py-2 hover:text-indigo-600 transition-colors">Vision</button>
+            <button onClick={onVisionImpact} className="text-base font-bold text-slate-700 py-2 hover:text-indigo-600 transition-colors">Impact</button>
             <button onClick={onStart} className="w-full text-left px-4 py-3 bg-slate-900 text-white rounded-xl font-bold">Espace Membre</button>
           </div>
         </div>

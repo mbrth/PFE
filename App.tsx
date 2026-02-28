@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import LandingPage from './components/LandingPage';
+import VisionImpactPage from './components/VisionImpactPage';
 import AuthModal from './components/AuthModal';
 import AIOnboarding from './components/AIOnboarding';
 import ChatInterface from './components/ChatInterface';
@@ -16,6 +17,7 @@ const App: React.FC = () => {
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showVisionImpact, setShowVisionImpact] = useState(false);
   const notificationsRef = useRef<HTMLDivElement | null>(null);
   const [userName, setUserName] = useState('');
   const [persona, setPersona] = useState('Apprenant Engagé');
@@ -75,9 +77,27 @@ const App: React.FC = () => {
   }, [showNotifications]);
 
   if (!isLoggedIn && !showOnboarding) {
+    if (showVisionImpact) {
+      return (
+        <>
+          <VisionImpactPage 
+            onBack={() => setShowVisionImpact(false)} 
+            onStart={() => setShowAuthModal(true)} 
+          />
+          <AuthModal 
+            isOpen={showAuthModal} 
+            onClose={() => setShowAuthModal(false)} 
+            onSuccess={handleAuthSuccess} 
+          />
+        </>
+      );
+    }
     return (
       <>
-        <LandingPage onStart={() => setShowAuthModal(true)} />
+        <LandingPage 
+          onStart={() => setShowAuthModal(true)} 
+          onVisionImpact={() => setShowVisionImpact(true)}
+        />
         <AuthModal 
           isOpen={showAuthModal} 
           onClose={() => setShowAuthModal(false)} 

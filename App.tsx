@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import LandingPage from './components/LandingPage';
 import AuthModal from './components/AuthModal';
 import AIOnboarding from './components/AIOnboarding';
@@ -8,45 +8,34 @@ import CourseCatalog from './components/CourseCatalog';
 import ProfileModal from './components/ProfileModal';
 import MainLayout from './layouts/MainLayout';
 import { useTheme } from './hooks/useTheme';
+import { useAppSession } from './hooks/useAppSession';
 
+/**
+ * Root component of the EcoOrient application.
+ * It orchestrates the top-level navigation, authentication flow, and theme management
+ * to ensure a seamless transition between discovery, onboarding, and the main dashboard.
+ */
 const App: React.FC = () => {
   const { isDark, toggleTheme } = useTheme();
-  
-  // User state
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [showOnboarding, setShowOnboarding] = useState(false);
-  const [showAuthModal, setShowAuthModal] = useState(false);
-  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
-  const [userName, setUserName] = useState('');
-  const [persona, setPersona] = useState('Apprenant Engagé');
-  
-  // Navigation state
-  const [activeTab, setActiveTab] = useState<'catalog' | 'dashboard' | 'chat'>('dashboard');
-  const [search, setSearch] = useState('');
+  const {
+    isLoggedIn,
+    showOnboarding,
+    showAuthModal,
+    setShowAuthModal,
+    isProfileModalOpen,
+    setIsProfileModalOpen,
+    userName,
+    persona,
+    activeTab,
+    setActiveTab,
+    search,
+    setSearch,
+    handleAuthSuccess,
+    handleOnboardingComplete,
+    handleLogout
+  } = useAppSession();
 
-  const handleAuthSuccess = (isNewUser: boolean, name: string) => {
-    setShowAuthModal(false);
-    setUserName(name);
-    if (isNewUser) {
-      setShowOnboarding(true);
-    } else {
-      setIsLoggedIn(true);
-    }
-  };
-
-  const handleOnboardingComplete = (generatedPersona: string) => {
-    setPersona(generatedPersona);
-    setShowOnboarding(false);
-    setIsLoggedIn(true);
-    setActiveTab('dashboard');
-  };
-
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setActiveTab('dashboard');
-  };
-
-  // Auth/Onboarding views
+  // If the user is not authenticated, we prioritize the marketing and authentication journey.
   if (!isLoggedIn && !showOnboarding) {
     return (
       <>
@@ -60,11 +49,12 @@ const App: React.FC = () => {
     );
   }
 
+  // New users are guided through an AI-powered onboarding to define their initial eco-persona.
   if (showOnboarding) {
     return <AIOnboarding userName={userName} onComplete={handleOnboardingComplete} />;
   }
 
-  // Main application view
+  // Once authenticated, the user gains access to the personalized management interface.
   return (
     <MainLayout
       isDark={isDark}

@@ -19,96 +19,106 @@ interface WelcomeBannerProps {
 const WelcomeBanner: React.FC<WelcomeBannerProps> = ({ isDark, trajectoryData }) => {
   const [showOverlay, setShowOverlay] = useState(false);
 
-  const trajectoryColor = trajectoryData.trajectory === 'responsable' ? 'text-emerald-400' : 'text-amber-400';
-  const trajectoryLabel = trajectoryData.trajectory === 'responsable' ? 'Responsible Trajectory' : 'Adjust Trajectory';
-  const impactColor = trajectoryData.lastDecisionImpact >= 0 ? 'text-emerald-400' : 'text-amber-400';
+  const trajectoryColor = trajectoryData.trajectory === 'responsable' ? 'text-sage' : 'text-clay';
+  const trajectoryLabel = trajectoryData.trajectory === 'responsable' ? 'Trajectoire Responsable' : 'Ajustement Requis';
+  const impactColor = trajectoryData.lastDecisionImpact >= 0 ? 'text-sage' : 'text-clay';
   const impactSign = trajectoryData.lastDecisionImpact >= 0 ? '+' : '';
   const ethicsIcon = trajectoryData.ethicsStatus === 'stable' ? 'fa-minus' : trajectoryData.ethicsStatus === 'improving' ? 'fa-arrow-up' : 'fa-arrow-down';
-  const ethicsColor = trajectoryData.ethicsStatus === 'stable' ? 'text-slate-400' : trajectoryData.ethicsStatus === 'improving' ? 'text-emerald-500' : 'text-amber-500';
+  const ethicsColor = trajectoryData.ethicsStatus === 'stable' ? 'text-sand-dark' : trajectoryData.ethicsStatus === 'improving' ? 'text-sage' : 'text-clay';
+
+  const containerBg = isDark ? 'bg-base-bg/10 text-base-bg border border-base-bg/10' : 'bg-ink text-white shadow-2xl shadow-ink/20';
 
   return (
-    <div className={`relative rounded-[2rem] p-6 md:p-8 lg:p-12 text-white shadow-2xl overflow-hidden group ${isDark ? 'bg-slate-800 shadow-slate-900/40' : 'bg-indigo-600 shadow-indigo-200'}`}>
-      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur-md rounded-full border border-white/20">
-             <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span>
-             <span className="text-[10px] font-black uppercase tracking-widest text-white/80 italic">Real-time analysis</span>
+    <div className={`relative rounded-[3rem] p-8 md:p-12 overflow-hidden group ${containerBg}`}>
+      <div className="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none">
+         <i className="fa-solid fa-code absolute top-10 left-10 text-6xl text-white"></i>
+         <i className="fa-solid fa-seedling absolute bottom-10 right-20 text-8xl text-white"></i>
+      </div>
+
+      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
+        <div className="lg:col-span-2 space-y-6">
+          <div className="inline-flex items-center gap-3 px-4 py-2 bg-white/10 backdrop-blur-md rounded-xl border border-white/10">
+             <span className="w-2 h-2 bg-sage rounded-full animate-pulse"></span>
+             <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/80">Analyse en temps réel</span>
           </div>
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tight leading-none">
-            Manage your impact <br/><span className="text-indigo-200">and your sovereignty.</span>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1]">
+            Pilotez votre <br/><span className="text-sage italic font-serif font-normal">Impact Numérique.</span>
           </h1>
-          <p className="text-indigo-100/80 text-sm leading-relaxed">
-            Your training choices directly influence your profile's digital maturity index. 
-            Keep going to reach the "Senior Eco-Architect" grade.
+          <p className="text-white/70 text-lg leading-relaxed max-w-xl">
+            Vos choix d'architecture et de code influencent directement l'indice de maturité de vos projets. Continuez pour atteindre la certification "Éco-Développeur".
           </p>
         </div>
 
         <div 
-          className="relative lg:col-span-1 bg-gradient-to-br from-white/10 to-white/5 rounded-2xl p-6 border border-white/10 cursor-pointer transition-all duration-300 group/card"
+          className="relative lg:col-span-1 bg-white/5 backdrop-blur-sm rounded-[2rem] p-8 border border-white/10 cursor-pointer transition-all duration-500 hover:bg-white/10 group/card"
           onMouseEnter={() => setShowOverlay(true)}
           onMouseLeave={() => setShowOverlay(false)}
         >
-          <div className="space-y-3">
-            <p className="text-[9px] font-black text-white/60 uppercase tracking-widest">Global Maturity</p>
-            <div className="flex items-baseline gap-3">
-              <span className="text-4xl font-black text-white">{trajectoryData.mainGrade}</span>
-              <span className={`text-[10px] font-bold ${trajectoryColor} uppercase tracking-wider`}>{trajectoryLabel}</span>
+          <div className="space-y-4">
+            <p className="text-[10px] font-black text-white/50 uppercase tracking-widest">Maturité Globale</p>
+            <div className="flex items-baseline gap-4">
+              <span className="text-6xl font-black text-white">{trajectoryData.mainGrade}</span>
+              <span className={`text-[10px] font-bold ${trajectoryColor} uppercase tracking-widest`}>{trajectoryLabel}</span>
             </div>
           </div>
 
-          <div className="space-y-1 mt-4">
-            <p className="text-[8px] font-bold text-white/50 uppercase tracking-widest">Last Decision</p>
-            <div className="flex items-center gap-2">
-              <span className={`text-xs font-black ${impactColor}`}>{impactSign}{Math.abs(trajectoryData.lastDecisionImpact)}%</span>
-              <span className="text-[8px] text-white/40">Impact</span>
-              <i className={`fa-solid fa-arrow-${trajectoryData.lastDecisionImpact >= 0 ? 'up' : 'down'} text-xs ${impactColor} opacity-60`}></i>
+          <div className="space-y-2 mt-8">
+            <p className="text-[9px] font-bold text-white/40 uppercase tracking-widest">Dernier Commit</p>
+            <div className="flex items-center gap-3">
+              <span className={`text-xl font-black ${impactColor}`}>{impactSign}{Math.abs(trajectoryData.lastDecisionImpact)}%</span>
+              <span className="text-[10px] font-bold text-white/40 uppercase tracking-widest">d'efficacité</span>
+              <i className={`fa-solid fa-arrow-${trajectoryData.lastDecisionImpact >= 0 ? 'up' : 'down'} text-sm ${impactColor}`}></i>
             </div>
           </div>
 
-          <div className="space-y-2 mt-4">
+          <div className="space-y-3 mt-8">
             <div className="flex items-center justify-between">
-              <span className="text-[8px] font-bold text-white/50">{trajectoryData.fromGrade} → {trajectoryData.toGrade}</span>
-              <span className="text-[8px] font-bold text-white/40">{trajectoryData.progressPercent}%</span>
+              <span className="text-[10px] font-bold text-white/50">{trajectoryData.fromGrade} → {trajectoryData.toGrade}</span>
+              <span className="text-[10px] font-bold text-white/50">{trajectoryData.progressPercent}%</span>
             </div>
-            <div className="h-1 bg-white/10 rounded-full overflow-hidden">
+            <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
               <div 
-                className="h-full bg-gradient-to-r from-indigo-300 to-emerald-300 rounded-full transition-all duration-1000"
+                className="h-full bg-sage rounded-full transition-all duration-1000"
                 style={{ width: `${trajectoryData.progressPercent}%` }}
               ></div>
             </div>
           </div>
 
           <div 
-            className={`absolute inset-0 rounded-2xl p-6 bg-slate-900/90 backdrop-blur-sm transition-all duration-300 flex flex-col justify-center z-20 ${showOverlay ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+            className={`absolute inset-0 rounded-[2rem] p-8 bg-ink/95 backdrop-blur-md transition-all duration-500 flex flex-col justify-center z-20 ${showOverlay ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
           >
-            <div className="space-y-2 text-white">
-              <div className="flex items-center justify-between text-[10px]">
-                <div className="flex items-center gap-2">
-                  <i className="fa-solid fa-leaf text-emerald-400"></i>
-                  <span className="font-bold">CO₂</span>
+            <div className="space-y-4 text-white">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-sage/20 flex items-center justify-center text-sage">
+                    <i className="fa-solid fa-leaf text-sm"></i>
+                  </div>
+                  <span className="text-xs font-bold uppercase tracking-widest">CO₂</span>
                 </div>
-                <span className="font-black text-emerald-400">{trajectoryData.co2}kg</span>
+                <span className="font-black text-lg text-sage">{trajectoryData.co2}kg</span>
               </div>
-              <div className="flex items-center justify-between text-[10px]">
-                <div className="flex items-center gap-2">
-                  <i className="fa-solid fa-shield-halved text-indigo-300"></i>
-                  <span className="font-bold">Sovereignty</span>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-sand/20 flex items-center justify-center text-sand">
+                    <i className="fa-solid fa-shield-halved text-sm"></i>
+                  </div>
+                  <span className="text-xs font-bold uppercase tracking-widest">Souveraineté</span>
                 </div>
-                <span className="font-black text-indigo-300">{trajectoryData.sovereignty}pts</span>
+                <span className="font-black text-lg text-sand">{trajectoryData.sovereignty}pts</span>
               </div>
-              <div className="flex items-center justify-between text-[10px]">
-                <div className="flex items-center gap-2">
-                  <i className={`fa-solid ${ethicsIcon} ${ethicsColor}`}></i>
-                  <span className="font-bold">Ethics</span>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className={`w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center ${ethicsColor}`}>
+                    <i className={`fa-solid ${ethicsIcon} text-sm`}></i>
+                  </div>
+                  <span className="text-xs font-bold uppercase tracking-widest">Éthique IA</span>
                 </div>
-                <span className={`font-black capitalize ${ethicsColor}`}>{trajectoryData.ethicsStatus}</span>
+                <span className={`font-black text-sm uppercase tracking-widest ${ethicsColor}`}>{trajectoryData.ethicsStatus}</span>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div className="absolute -top-24 -right-24 w-96 h-96 bg-indigo-500 rounded-full blur-[100px] opacity-50 group-hover:scale-110 transition-transform duration-1000"></div>
-      <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-emerald-500 rounded-full blur-[80px] opacity-30"></div>
     </div>
   );
 };

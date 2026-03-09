@@ -35,15 +35,15 @@ const MainLayout: React.FC<MainLayoutProps> = ({
   const notificationsRef = useRef<HTMLDivElement | null>(null);
 
   const navItems: NavItem[] = [
-    { id: 'dashboard', icon: 'fa-chart-pie', label: 'Dashboard', group: 'ANALYTIQUE' },
+    { id: 'dashboard', icon: 'fa-chart-pie', label: 'Impact & Suivi', group: 'ANALYTIQUE' },
     { id: 'catalog', icon: 'fa-book-open-reader', label: 'Formations', group: 'APPRENTISSAGE' },
-    { id: 'chat', icon: 'fa-message-bot', label: 'Expert IA', group: 'CONSEIL' }
+    { id: 'chat', icon: 'fa-robot', label: 'Mentor IA', group: 'ACCOMPAGNEMENT' }
   ];
 
   const notificationsList = [
-    { id: 1, title: 'New course available: Eco-design', time: '2h' },
-    { id: 2, title: 'Your profile gained 5 maturity points', time: '1d' },
-    { id: 3, title: 'Reminder: complete GDPR module', time: '3d' }
+    { id: 1, title: 'Nouveau cours: Architecture Souveraine', time: '2h' },
+    { id: 2, title: 'Votre profil a gagné 5 points d\'éthique', time: '1j' },
+    { id: 3, title: 'Rappel: Finaliser le module Eco-Code', time: '3j' }
   ];
 
   useEffect(() => {
@@ -57,7 +57,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
   }, [showNotifications]);
 
   return (
-    <div className={`min-h-screen flex font-sans antialiased relative ${isDark ? 'bg-slate-900 text-slate-100' : 'bg-[#FDFDFE] text-slate-900'}`}>
+    <div className={`min-h-screen flex font-sans antialiased relative ${isDark ? 'bg-ink text-base-bg' : 'bg-base-bg text-ink'}`}>
       <Sidebar 
         navItems={navItems}
         activeTab={activeTab}
@@ -67,9 +67,10 @@ const MainLayout: React.FC<MainLayoutProps> = ({
         userName={userName}
         persona={persona}
         onLogout={onLogout}
+        isDark={isDark}
       />
 
-      <div className="flex-1 lg:ml-20 flex flex-col min-w-0">
+      <div className="flex-1 lg:ml-72 flex flex-col min-w-0">
         <Header 
           isDark={isDark}
           toggleTheme={toggleTheme}

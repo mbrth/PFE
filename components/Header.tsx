@@ -35,42 +35,51 @@ const Header: React.FC<HeaderProps> = ({
   const getTabLabel = () => {
     switch (activeTab) {
       case 'dashboard': return 'Moteur Analytique';
-      case 'catalog': return 'Catalogue Stratégique';
-      case 'chat': return 'Intelligence Artificielle';
+      case 'catalog': return 'Catalogue de Formations';
+      case 'chat': return 'Accompagnement IA';
       default: return '';
     }
   };
 
+  const bgClass = isDark ? 'bg-ink/90 border-base-bg/10' : 'bg-base-bg/90 border-ink/5';
+  const textClass = isDark ? 'text-base-bg' : 'text-ink';
+  const mutedTextClass = isDark ? 'text-base-bg/50' : 'text-ink/50';
+  const iconBgClass = isDark ? 'bg-base-bg/5 text-base-bg hover:bg-base-bg/10' : 'bg-white text-ink border border-ink/5 hover:shadow-sm';
+
   return (
-    <header className={`sticky top-0 z-40 ${isDark ? 'bg-slate-900/80 border-b border-slate-800 text-slate-100' : 'bg-white/80 border-b border-slate-100 text-slate-900'} backdrop-blur-md px-6 lg:px-12 py-4 flex items-center justify-between`}>
-      <div className="flex items-center gap-4">
+    <header className={`sticky top-0 z-40 ${bgClass} border-b backdrop-blur-md px-6 lg:px-12 py-6 flex items-center justify-between`}>
+      <div className="flex items-center gap-6">
          <button 
            onClick={() => setIsDrawerOpen(true)}
-           className={`lg:hidden w-11 h-11 flex items-center justify-center rounded-2xl transition-all active:scale-90 ${isDark ? 'text-slate-100 bg-slate-800 hover:bg-slate-700' : 'text-slate-900 bg-slate-100 hover:bg-slate-200'}`}
+           className={`lg:hidden w-12 h-12 flex items-center justify-center rounded-2xl transition-all active:scale-90 ${iconBgClass}`}
          >
            <i className="fa-solid fa-bars-staggered text-lg"></i>
          </button>
          
          <div className="hidden sm:block">
-           <h2 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">
+           <h2 className={`text-xs font-black uppercase tracking-[0.2em] ${mutedTextClass}`}>
              {getTabLabel()}
            </h2>
-           <p className="text-xs text-indigo-600 font-bold flex items-center gap-1.5 mt-0.5">
-             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> 
+           <p className="text-sm font-bold flex items-center gap-2 mt-1">
+             <span className="w-2 h-2 rounded-full bg-sage"></span> 
              {persona}
            </p>
          </div>
       </div>
 
-      <div className="flex-1 max-w-md mx-8 hidden md:block">
+      <div className="flex-1 max-w-xl mx-8 hidden md:block">
          <div className="relative group">
-            <i className={`fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 transition-colors ${isDark ? 'text-slate-400 group-focus-within:text-indigo-400' : 'text-slate-400 group-focus-within:text-indigo-500'}`}></i>
+            <i className={`fa-solid fa-magnifying-glass absolute left-5 top-1/2 -translate-y-1/2 transition-colors ${isDark ? 'text-base-bg/40 group-focus-within:text-sage' : 'text-ink/40 group-focus-within:text-sage'}`}></i>
             <input 
               type="text" 
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Rechercher une compétence, un cours..." 
-              className={`w-full pl-11 pr-4 py-2.5 rounded-2xl text-xs font-medium outline-none transition-all ${isDark ? 'bg-slate-700 border border-slate-600 text-slate-100 focus:ring-4 focus:ring-slate-700/50' : 'bg-slate-50 border border-slate-200 focus:ring-4 focus:ring-indigo-100/50 focus:bg-white'}`}
+              placeholder="Rechercher une compétence, un cours, un concept..." 
+              className={`w-full pl-14 pr-6 py-4 rounded-2xl text-sm font-bold outline-none transition-all ${
+                isDark 
+                  ? 'bg-base-bg/5 border border-base-bg/10 text-base-bg focus:ring-4 focus:ring-sage/20' 
+                  : 'bg-white border border-ink/5 text-ink focus:ring-4 focus:ring-sage/20 shadow-sm'
+              }`}
             />
          </div>
       </div>
@@ -79,40 +88,45 @@ const Header: React.FC<HeaderProps> = ({
          <button
           onClick={toggleTheme}
           aria-label="Toggle theme"
-          className={`w-10 h-10 flex items-center justify-center rounded-xl transition ${isDark ? 'bg-slate-700 text-yellow-300' : 'bg-white/20 text-slate-700'}`}
+          className={`w-12 h-12 flex items-center justify-center rounded-2xl transition-all ${iconBgClass}`}
          >
-          <i className={`fa-solid ${isDark ? 'fa-moon' : 'fa-sun'}`}></i>
+          <i className={`fa-solid ${isDark ? 'fa-moon' : 'fa-sun text-sand-dark'}`}></i>
          </button>
 
          <div className="relative" ref={notificationsRef}>
-           <button onClick={() => setShowNotifications(!showNotifications)} aria-expanded={showNotifications} aria-label="Notifications" className={`relative w-10 h-10 flex items-center justify-center rounded-xl transition-all ${isDark ? 'text-slate-300 hover:text-indigo-400 hover:bg-indigo-900/20' : 'text-slate-400 hover:text-indigo-600 hover:bg-indigo-50'}`}>
+           <button 
+             onClick={() => setShowNotifications(!showNotifications)} 
+             aria-expanded={showNotifications} 
+             aria-label="Notifications" 
+             className={`relative w-12 h-12 flex items-center justify-center rounded-2xl transition-all ${iconBgClass}`}
+           >
              <i className="fa-solid fa-bell"></i>
-             <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-rose-500 rounded-full border-2 border-white"></span>
+             <span className="absolute top-3 right-3 w-2.5 h-2.5 bg-clay rounded-full border-2 border-white"></span>
            </button>
 
            {showNotifications && (
-             <div role="dialog" aria-label="Notifications" className={`absolute right-0 mt-3 w-80 max-h-80 overflow-auto rounded-xl shadow-2xl z-50 ${isDark ? 'bg-slate-800 border border-slate-700 text-slate-100' : 'bg-white border border-slate-100 text-slate-900'}`}>
-               <div className="p-4 border-b" style={{ borderColor: isDark ? 'rgba(148,163,184,0.06)' : undefined }}>
+             <div role="dialog" aria-label="Notifications" className={`absolute right-0 mt-4 w-96 max-h-96 overflow-auto rounded-3xl shadow-2xl z-50 ${isDark ? 'bg-ink border border-base-bg/10' : 'bg-white border border-ink/5'}`}>
+               <div className="p-6 border-b border-inherit">
                  <div className="flex items-center justify-between">
-                   <strong className="text-sm">Notifications</strong>
-                   <button onClick={() => setShowNotifications(false)} className="text-xs text-slate-400 hover:text-slate-600">Close</button>
+                   <strong className="text-lg font-black">Notifications</strong>
+                   <button onClick={() => setShowNotifications(false)} className={`text-sm font-bold ${mutedTextClass} hover:text-inherit`}>Fermer</button>
                  </div>
                </div>
                <ul className="p-3 space-y-2">
                  {notificationsList.length === 0 && (
-                   <li className="text-xs text-slate-400 p-3">No notifications</li>
+                   <li className={`text-sm font-bold ${mutedTextClass} p-4 text-center`}>Aucune notification</li>
                  )}
                  {notificationsList.map(n => (
-                   <li key={n.id} className={`p-3 rounded-lg ${isDark ? 'hover:bg-slate-700' : 'hover:bg-slate-50'}`}>
-                     <div className="flex items-center justify-between">
-                       <div className="text-sm font-bold">{n.title}</div>
-                       <div className="text-[10px] text-slate-400">{n.time}</div>
+                   <li key={n.id} className={`p-4 rounded-2xl transition-colors ${isDark ? 'hover:bg-base-bg/5' : 'hover:bg-base-bg'}`}>
+                     <div className="flex items-center justify-between gap-4">
+                       <div className="text-sm font-bold flex-1">{n.title}</div>
+                       <div className={`text-[10px] font-black uppercase tracking-widest ${mutedTextClass}`}>{n.time}</div>
                      </div>
                    </li>
                  ))}
                </ul>
-               <div className="p-3 border-t text-center text-xs" style={{ borderColor: isDark ? 'rgba(148,163,184,0.06)' : undefined }}>
-                 <button className="text-indigo-600 hover:underline">See all notifications</button>
+               <div className="p-4 border-t border-inherit text-center">
+                 <button className="text-xs font-black uppercase tracking-[0.2em] text-sage hover:text-sage-light transition-colors">Voir tout</button>
                </div>
              </div>
            )}
@@ -120,13 +134,13 @@ const Header: React.FC<HeaderProps> = ({
          
          <button 
            onClick={() => setIsProfileModalOpen(true)}
-           className={`flex items-center gap-3 pl-4 border-l transition-opacity group hover:opacity-80 ${isDark ? 'border-slate-700' : 'border-slate-200'}`}
+           className={`flex items-center gap-4 pl-6 ml-2 border-l transition-opacity group hover:opacity-80 border-transparent ${isDark ? 'border-base-bg/10' : 'border-ink/5'}`}
          >
             <div className="text-right hidden sm:block">
-               <p className={`text-xs font-black leading-none transition-colors ${isDark ? 'text-slate-100 group-hover:text-indigo-300' : 'text-slate-900 group-hover:text-indigo-600'}`}>{userName}</p>
-               <p className="text-[9px] text-slate-400 font-bold uppercase mt-1">Manage profile</p>
+               <p className={`text-sm font-black leading-none transition-colors group-hover:text-sage ${textClass}`}>{userName}</p>
+               <p className={`text-[10px] font-bold uppercase tracking-widest mt-1.5 ${mutedTextClass}`}>Gérer le profil</p>
             </div>
-            <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${userName}`} className={`w-9 h-9 rounded-xl shadow-sm transition-all group-hover:ring-indigo-100 ${isDark ? 'bg-slate-700 ring-2 ring-slate-800' : 'bg-slate-100 ring-2 ring-white'}`} alt="avatar" />
+            <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${userName}`} className={`w-12 h-12 rounded-2xl shadow-sm transition-all group-hover:scale-105 ${isDark ? 'bg-base-bg/10' : 'bg-base-bg'}`} alt="avatar" />
          </button>
       </div>
     </header>

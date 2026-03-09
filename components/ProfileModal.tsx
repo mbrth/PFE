@@ -13,120 +13,121 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, userName, 
 
   const badges = [
     { icon: 'fa-seedling', label: 'Eco-Pionnier' },
-    { icon: 'fa-user-shield', label: 'Privacy First' },
-    { icon: 'fa-bolt', label: 'Apprenant Rapide' },
+    { icon: 'fa-shield-halved', label: 'Privacy First' },
+    { icon: 'fa-code', label: 'Clean Coder' },
   ];
 
   return (
-    <div className="fixed inset-0 z-[100]">
-      {/* Backdrop subtle */}
+    <div className="fixed inset-0 z-[100] flex justify-end">
+      {/* Backdrop */}
       <div 
-        className="absolute inset-0 bg-slate-900/30 animate-in fade-in duration-300"
+        className="absolute inset-0 bg-ink/40 backdrop-blur-sm animate-in fade-in duration-300"
         onClick={onClose}
       ></div>
 
-      {/* Panel sliding in from top-right */}
-      <div className="absolute top-6 right-6 w-full max-w-sm md:max-w-md rounded-3xl shadow-2xl shadow-slate-900/40 overflow-hidden animate-in slide-in-from-top-8 fade-in duration-400 border border-slate-200 bg-white">
+      {/* Panel */}
+      <div className="relative w-full max-w-sm md:max-w-md h-full bg-ink shadow-2xl animate-in slide-in-from-right duration-500 flex flex-col">
         
-        {/* Header with gradient background */}
-        <div className="relative bg-gradient-to-br from-indigo-600 via-indigo-500 to-slate-900 p-6 overflow-hidden">
-          {/* Decorative accent */}
-          <div className="absolute -top-20 -right-20 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
-          <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-emerald-400/10 rounded-full blur-2xl"></div>
-
-          {/* Close button */}
+        {/* Header (Now naturally adopts the panel's ink background) */}
+        <div className="relative p-8 overflow-hidden shrink-0 text-white">
+          {/* Decorative */}
+          <div className="absolute -top-20 -right-20 w-48 h-48 bg-sage/20 rounded-full blur-3xl"></div>
+          
           <button 
             onClick={onClose}
-            className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center bg-white/10 hover:bg-white/20 rounded-lg transition-all text-white"
+            className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center bg-white/5 hover:bg-white/10 rounded-xl transition-all text-white z-20"
           >
-            <i className="fa-solid fa-xmark text-sm"></i>
+            <i className="fa-solid fa-xmark"></i>
           </button>
 
-          {/* Profile Header */}
-          <div className="relative z-10">
-            <div className="flex items-center gap-4 mb-4">
+          <div className="relative z-10 mt-4">
+            <div className="flex items-center gap-5 mb-6">
               <div className="relative">
                 <img 
                   src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${userName}`} 
-                  className="w-16 h-16 rounded-2xl bg-white shadow-lg" 
+                  className="w-20 h-20 rounded-3xl bg-base-bg shadow-lg border-2 border-ink" 
+                  alt="avatar"
                 />
-                <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-emerald-400 rounded-full flex items-center justify-center shadow-md">
-                  <i className="fa-solid fa-check text-white text-[9px]"></i>
+                <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-sage rounded-xl flex items-center justify-center shadow-md border-2 border-ink">
+                  <i className="fa-solid fa-check text-white text-xs"></i>
                 </div>
               </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="text-lg font-black text-white truncate">{userName}</h3>
-                <p className="text-indigo-100 text-[11px] font-bold uppercase tracking-wider truncate">{persona}</p>
+              <div className="flex-1 min-w-0 space-y-1">
+                <h3 className="text-2xl font-black text-white truncate">{userName}</h3>
+                <p className="text-sage-light text-[10px] font-black uppercase tracking-widest truncate">{persona}</p>
               </div>
             </div>
 
             {/* Quick badges */}
             <div className="flex gap-2 flex-wrap">
               {badges.slice(0, 2).map((badge, idx) => (
-                <span key={idx} className="inline-flex items-center gap-1 px-2.5 py-1 bg-white/15 rounded-lg border border-white/20 text-[9px] font-black text-white uppercase">
-                  <i className={`fa-solid ${badge.icon} text-indigo-200`}></i>
+                <span key={idx} className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/10 rounded-xl border border-white/10 text-[9px] font-black text-white uppercase tracking-widest">
+                  <i className={`fa-solid ${badge.icon} text-sage`}></i>
+                  {badge.label}
                 </span>
               ))}
             </div>
           </div>
         </div>
 
-        {/* Stats section */}
-        <div className="p-6 space-y-5 max-h-[calc(100vh-200px)] overflow-y-auto">
-          {/* Main KPIs - 3 columns */}
-          <div className="grid grid-cols-3 gap-3">
-            <div className="bg-emerald-50 p-4 rounded-2xl border border-emerald-100">
-              <p className="text-[8px] font-black text-emerald-600 uppercase mb-2">Grade</p>
-              <p className="text-2xl font-black text-emerald-700">A+</p>
+        {/* Scrollable Content (Light background overlaid on top) */}
+        <div className="flex-1 flex flex-col bg-white rounded-tl-[2.5rem] mt-2 overflow-hidden">
+          <div className="p-8 space-y-8 flex-1 overflow-y-auto">
+            
+            {/* Main KPIs */}
+            <div className="grid grid-cols-3 gap-4">
+              <div className="bg-sage/10 p-5 rounded-[2rem] border border-sage/20 text-center">
+                <p className="text-[9px] font-black text-sage uppercase tracking-widest mb-2">Grade</p>
+                <p className="text-3xl font-black text-ink">A+</p>
+              </div>
+              <div className="bg-sand/20 p-5 rounded-[2rem] border border-sand/30 text-center">
+                <p className="text-[9px] font-black text-sand-dark uppercase tracking-widest mb-2">Sov</p>
+                <p className="text-3xl font-black text-ink">94%</p>
+              </div>
+              <div className="bg-clay/10 p-5 rounded-[2rem] border border-clay/20 text-center">
+                <p className="text-[9px] font-black text-clay uppercase tracking-widest mb-2">Lvl</p>
+                <p className="text-3xl font-black text-ink">12</p>
+              </div>
             </div>
-            <div className="bg-indigo-50 p-4 rounded-2xl border border-indigo-100">
-              <p className="text-[8px] font-black text-indigo-600 uppercase mb-2">Souverain</p>
-              <p className="text-2xl font-black text-indigo-700">94%</p>
+
+            {/* Progress */}
+            <div className="space-y-3 p-6 bg-base-bg rounded-[2.5rem] border border-ink/5">
+              <div className="flex items-center justify-between">
+                <p className="text-[10px] font-black text-ink/40 uppercase tracking-widest">Maturité</p>
+                <p className="text-[10px] font-black text-ink">740/1000 XP</p>
+              </div>
+              <div className="h-2 bg-ink/5 rounded-full overflow-hidden">
+                <div className="h-full bg-sage w-3/4 rounded-full transition-all duration-1000"></div>
+              </div>
             </div>
-            <div className="bg-amber-50 p-4 rounded-2xl border border-amber-100">
-              <p className="text-[8px] font-black text-amber-600 uppercase mb-2">Niveau</p>
-              <p className="text-2xl font-black text-amber-700">12</p>
+
+            {/* Skills */}
+            <div>
+              <p className="text-[10px] font-black text-ink/40 uppercase tracking-widest mb-4 flex items-center gap-3">
+                <i className="fa-solid fa-code text-sage"></i>
+                Compétences clés
+              </p>
+              <div className="grid grid-cols-2 gap-3">
+                {['Green Coding', 'Cloud EU', 'RGPD', 'IA Éthique'].map((skill, i) => (
+                  <div key={i} className="px-4 py-3 rounded-2xl bg-base-bg border border-ink/5 hover:border-sage transition-colors group shadow-sm text-center">
+                    <p className="text-[10px] font-bold text-ink group-hover:text-sage uppercase tracking-widest">{skill}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-
-          {/* Progress bar */}
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <p className="text-[10px] font-black text-slate-500 uppercase">Maturité</p>
-              <p className="text-[10px] font-black text-indigo-600">740/1000 XP</p>
-            </div>
-            <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
-              <div className="h-full bg-gradient-to-r from-indigo-500 to-emerald-500 w-3/4 rounded-full transition-all duration-1000"></div>
-            </div>
-          </div>
-
-          {/* Skills */}
-          <div className="pt-2">
-            <p className="text-[10px] font-black text-slate-600 uppercase mb-3 flex items-center gap-2">
-              <span className="w-5 h-5 rounded-lg bg-slate-900 text-white flex items-center justify-center text-[8px]">
-                <i className="fa-solid fa-sparkles"></i>
-              </span>
-              Compétences clés
-            </p>
-            <div className="grid grid-cols-2 gap-2">
-              {['Green Coding', 'Cloud EU', 'RGPD', 'IA Éthique'].map((skill, i) => (
-                <div key={i} className="px-3 py-2 rounded-xl bg-slate-50 border border-slate-100 hover:border-indigo-200 transition-colors group">
-                  <p className="text-[9px] font-black text-slate-700 group-hover:text-indigo-600">{skill}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Action buttons - compact */}
-          <div className="pt-3 space-y-2">
-            <button className="w-full py-2.5 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-slate-900 text-white rounded-xl font-black text-[10px] uppercase tracking-wide transition-all shadow-md flex items-center justify-center gap-2">
-              <i className="fa-solid fa-sliders text-xs"></i> Configurer
+          
+          {/* Footer Actions */}
+          <div className="p-8 border-t border-ink/5 bg-white shrink-0 space-y-3">
+            <button className="w-full py-4 bg-ink hover:bg-sage text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-xl shadow-ink/10 flex items-center justify-center gap-3">
+              <i className="fa-solid fa-sliders"></i> Configurer le profil
             </button>
-            <button className="w-full py-2.5 bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 rounded-xl font-black text-[10px] uppercase tracking-wide transition-all flex items-center justify-center gap-2">
-              <i className="fa-solid fa-download text-xs"></i> Exporter
+            <button onClick={onClose} className="w-full py-4 bg-base-bg border border-ink/5 text-ink hover:bg-ink/5 rounded-2xl font-black text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-3">
+              <i className="fa-solid fa-arrow-right-from-bracket"></i> Fermer
             </button>
           </div>
         </div>
+
       </div>
     </div>
   );

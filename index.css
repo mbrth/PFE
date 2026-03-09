@@ -1,18 +1,57 @@
 @import "tailwindcss";
-@import "@fortawesome/fontawesome-free/css/all.min.css";
-@import "@fontsource/inter/index.css";
-@import "@fontsource/inter/400.css";
-@import "@fontsource/inter/500.css";
-@import "@fontsource/inter/600.css";
-@import "@fontsource/inter/700.css";
-@import "@fontsource/inter/800.css";
-@import "@fontsource/inter/900.css";
 
-@config "./tailwind.config.js";
+@theme {
+  --color-base-bg: #F8F7F2;
+  --color-sage: #7D9D85;
+  --color-sage-light: #DCE5DE;
+  --color-sand: #E9DCC9;
+  --color-clay: #D9A08B;
+  --color-ink: #2D3331;
+}
 
 @layer base {
   body {
-    @apply bg-slate-50 text-slate-900;
-    font-family: 'Inter', sans-serif;
+    @apply antialiased bg-base-bg text-ink selection:bg-sage-light;
   }
+}
+
+/* Nouvelles utilités pour des icônes vivantes */
+@utility icon-circle {
+  @apply w-16 h-16 rounded-full flex items-center justify-center transition-all duration-500 bg-white shadow-sm border border-ink/5 text-2xl;
+}
+
+@utility icon-float {
+  @apply absolute opacity-10 text-4xl pointer-events-none;
+}
+
+@utility btn-main {
+  @apply px-10 py-5 bg-ink text-white rounded-2xl font-black hover:bg-sage transition-all duration-300 flex items-center gap-3 shadow-xl shadow-ink/10;
+}
+
+@utility card-eco {
+  @apply bg-white border border-ink/5 rounded-[3rem] p-10 transition-all duration-500 hover:shadow-xl hover:shadow-sage/5;
+}
+
+@utility card-modern {
+  @apply p-8 md:p-12 rounded-[3rem] shadow-sm transition-all duration-500;
+}
+
+@utility container-section {
+  @apply max-w-7xl mx-auto px-6 md:px-12;
+}
+
+@utility section-header {
+  @apply flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 mb-12 border-b border-ink/5 pb-8;
+}
+
+@utility title-main {
+  @apply text-4xl md:text-5xl font-black tracking-tight;
+}
+
+@utility text-muted {
+  @apply text-ink/50 font-medium;
+}
+
+@utility badge-eco {
+  @apply inline-flex items-center gap-2 px-3 py-1 bg-sage/10 text-sage font-bold text-[10px] uppercase tracking-widest rounded-lg;
 }

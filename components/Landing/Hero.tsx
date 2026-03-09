@@ -9,12 +9,6 @@ const Hero: React.FC<HeroProps> = ({ onStart }) => {
   return (
     <section className="max-w-7xl mx-auto px-6 pt-20 pb-32 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
       <div className="space-y-8 animate-in slide-in-from-left-8 duration-700">
-        <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-50 border border-indigo-100 rounded-full">
-          <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
-          <span className="text-[10px] font-black text-indigo-700 uppercase tracking-widest italic">
-            The future of orientation is here
-          </span>
-        </div>
         
         <h1 className="text-6xl font-black text-slate-900 leading-[1.1] tracking-tighter">
           Guide your career towards <span className="text-indigo-600">Responsible Tech.</span>

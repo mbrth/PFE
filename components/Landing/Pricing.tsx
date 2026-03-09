@@ -7,146 +7,94 @@ interface PricingProps {
 
 const Pricing: React.FC<PricingProps> = ({ onStart }) => {
   return (
-    <section className="max-w-7xl mx-auto px-6 py-20">
-      <div className="text-center mb-16 animate-in fade-in duration-700">
-        <h2 className="text-5xl font-black text-slate-900 mb-4 tracking-tighter">
-          Invest in your impact.
+    <section className="max-w-7xl mx-auto px-6 py-32" id="tarifs">
+      <div className="text-center mb-20 space-y-4">
+        <h2 className="text-4xl md:text-5xl font-black text-ink tracking-tight">
+          Choisissez votre <span className="text-sage italic font-serif font-normal">engagement.</span>
         </h2>
-        <p className="text-lg text-slate-500 max-w-2xl mx-auto">
-          From individual exploration to full team transformation. Choose the plan that fits your ambition.
+        <p className="text-lg text-ink/50 max-w-2xl mx-auto font-medium">
+          Une tarification transparente pour soutenir une tech durable.
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {/* Explorateur Plan */}
         <PricingCard 
-          title="Explorer"
-          subtitle="To start your transition"
-          price="Free"
-          priceSuffix="/mo"
-          ctaText="Start for free"
+          icon="fa-compass"
+          title="Curiosité"
+          price="0€"
+          desc="Découvrez les bases du code et de l'IA responsable."
           features={[
-            { text: "Access to 50+ courses", included: true },
-            { text: "AI assessment 1x/mo", included: true },
-            { text: "Personal CO2 measure", included: true },
-            { text: "Digital certificates", included: true },
-            { text: "Custom mentorship", included: false },
-            { text: "API & Integrations", included: false }
+             { icon: "fa-book", text: "10 modules d'initiation" },
+             { icon: "fa-chart-pie", text: "Bilan CO2 mensuel" },
+             { icon: "fa-users", text: "Accès communauté Dev" }
           ]}
-        />
-
-        {/* Professionnel Plan - Recommended */}
-        <PricingCard 
-          title="Professional"
-          subtitle="For motivated individuals"
-          price="14€"
-          priceSuffix="/mo"
-          ctaText="Start my transformation"
-          isRecommended
           onStart={onStart}
-          features={[
-            { text: "Everything in Explorer", included: true, bold: true },
-            { text: "200+ advanced courses", included: true },
-            { text: "Unlimited AI assessment", included: true },
-            { text: "Expert mentorship", included: true },
-            { text: "Career coaching", included: true },
-            { text: "Eco-Architect badge", included: true },
-            { text: "API & Integrations", included: false }
-          ]}
         />
-
-        {/* Entreprise Plan */}
         <PricingCard 
-          title="Enterprise"
-          subtitle="For teams of 10+"
-          price="Custom"
-          priceSuffix=""
-          ctaText="Request a demo"
+          icon="fa-leaf"
+          title="Engagement"
+          price="14€"
+          priceSuffix="/mois"
+          desc="Transformez radicalement votre façon de coder."
+          isRecommended
           features={[
-            { text: "Everything in Pro", included: true, bold: true },
-            { text: "Multi-account & roles", included: true },
-            { text: "Team dashboards", included: true },
-            { text: "Training & Onboarding", included: true },
-            { text: "API & Integrations", included: true },
-            { text: "Priority 24/7 support", included: true },
-            { text: "Governance & audit", included: true }
+             { icon: "fa-infinity", text: "Accès illimité aux cours" },
+             { icon: "fa-certificate", text: "Certification Éco-Développeur" },
+             { icon: "fa-user-tie", text: "Mentorat technique" },
+             { icon: "fa-lightbulb", text: "Projets IA souverains" }
           ]}
+          onStart={onStart}
+        />
+        <PricingCard 
+          icon="fa-building-columns"
+          title="Institution"
+          price="Sur devis"
+          desc="Pour les écoles et entreprises en transition."
+          features={[
+             { icon: "fa-users-gear", text: "Dashboard d'équipe" },
+             { icon: "fa-server", text: "Souveraineté garantie" },
+             { icon: "fa-magnifying-glass-location", text: "Audit d'impact groupe" }
+          ]}
+          onStart={onStart}
         />
       </div>
-
     </section>
   );
 };
 
-interface PricingCardProps {
-  title: string;
-  subtitle: string;
-  price: string;
-  priceSuffix: string;
-  ctaText: string;
-  isRecommended?: boolean;
-  onStart?: () => void;
-  features: { text: string; included: boolean; bold?: boolean }[];
-}
-
-const PricingCard: React.FC<PricingCardProps> = ({
-  title, subtitle, price, priceSuffix, ctaText, isRecommended, onStart, features
-}) => {
-  return (
-    <div className={`group rounded-[2rem] p-8 transition-all duration-500 bg-white border ${
-      isRecommended 
-        ? 'border-2 border-indigo-600 shadow-2xl shadow-indigo-100 bg-gradient-to-br from-indigo-50 to-white relative transform md:scale-105 md:-translate-y-4' 
-        : 'border-slate-200 hover:shadow-2xl hover:border-indigo-200'
-    }`}>
-      {isRecommended && (
-        <div className="absolute -top-4 left-8 bg-indigo-600 text-white px-4 py-1 rounded-full text-[10px] font-black uppercase">
-          RECOMMENDED
-        </div>
-      )}
-      
-      <div className="mb-8">
-        <h3 className="text-2xl font-black text-slate-900 mb-2">{title}</h3>
-        <p className={`text-sm ${isRecommended ? 'text-slate-600 font-bold' : 'text-slate-500'}`}>
-          {subtitle}
-        </p>
-      </div>
-      
-      <div className="mb-8">
-        <div className="flex items-baseline gap-1">
-          <span className={`text-4xl font-black ${isRecommended ? 'text-indigo-600' : 'text-slate-900'}`}>
-            {price}
-          </span>
-          <span className="text-sm text-slate-500">{priceSuffix}</span>
-        </div>
-      </div>
-      
-      <button 
-        onClick={onStart}
-        className={`w-full py-3 px-6 rounded-xl font-bold transition-all mb-8 shadow-lg ${
-          isRecommended 
-            ? 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-indigo-200' 
-            : 'bg-slate-100 text-slate-900 hover:bg-slate-200'
-        }`}
-      >
-        {ctaText}
-      </button>
-      
-      <div className={`space-y-3 border-t pt-8 ${isRecommended ? 'border-indigo-200' : 'border-slate-100'}`}>
-        {features.map((feature, i) => (
-          <div key={i} className={`flex items-center gap-3 ${!feature.included ? 'opacity-40' : ''}`}>
-            {feature.included ? (
-              <i className={`fa-solid fa-check text-sm ${isRecommended ? 'text-indigo-600' : 'text-emerald-500'}`}></i>
-            ) : (
-              <i className="fa-solid fa-xmark text-slate-400 text-sm"></i>
-            )}
-            <span className={`text-sm text-slate-700 ${feature.bold ? 'font-bold' : ''}`}>
-              {feature.text}
-            </span>
-          </div>
-        ))}
-      </div>
+const PricingCard = ({ icon, title, price, priceSuffix, desc, isRecommended, features, onStart }: any) => (
+  <div className={`bg-white rounded-[2.5rem] p-10 flex flex-col border ${isRecommended ? 'border-sage shadow-xl shadow-sage/10 scale-105 relative z-10' : 'border-ink/5'}`}>
+    <div className={`w-14 h-14 rounded-2xl mb-8 flex items-center justify-center text-xl ${isRecommended ? 'bg-sage text-white shadow-md shadow-sage/20' : 'bg-sand/30 text-sand-dark'}`}>
+      <i className={`fa-solid ${icon}`}></i>
     </div>
-  );
-};
+    
+    <div className="mb-6 space-y-2 text-left">
+      <h3 className="text-xl font-black text-ink">{title}</h3>
+      <p className="text-sm text-ink/50 font-medium leading-tight">{desc}</p>
+    </div>
+
+    <div className="flex items-baseline gap-1 mb-8 text-left">
+      <span className="text-4xl font-black text-ink">{price}</span>
+      <span className="text-sm text-ink/40 font-bold uppercase tracking-widest">{priceSuffix}</span>
+    </div>
+
+    <button 
+      onClick={onStart} 
+      className={`w-full py-4 rounded-xl font-bold text-base transition-all mb-10 flex items-center justify-center gap-2 ${
+        isRecommended ? 'bg-sage text-white hover:bg-ink' : 'bg-ink text-white hover:bg-sage'
+      }`}
+    >
+      Sélectionner <i className="fa-solid fa-chevron-right text-xs"></i>
+    </button>
+
+    <ul className="space-y-4 mt-auto text-left">
+      {features.map((f: any, i: number) => (
+        <li key={i} className="flex items-center gap-3 text-sm font-semibold text-ink/70">
+          <i className={`fa-solid ${f.icon} text-sage w-4 text-center opacity-80`}></i> {f.text}
+        </li>
+      ))}
+    </ul>
+  </div>
+);
 
 export default Pricing;

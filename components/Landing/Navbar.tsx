@@ -6,50 +6,56 @@ interface NavbarProps {
 }
 
 const Navbar: React.FC<NavbarProps> = ({ onStart }) => {
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="max-w-7xl mx-auto px-6 py-6 md:py-8">
+    <nav className="max-w-7xl mx-auto px-6 py-6 md:py-10 relative z-50">
       <div className="flex items-center justify-between">
+        
+        {/* Logo */}
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-lg">
-            <i className="fa-solid fa-leaf text-xl"></i>
+          <div className="w-8 h-8 md:w-10 md:h-10 bg-sage rounded-xl flex items-center justify-center text-white shadow-sm shadow-sage/30">
+            <i className="fa-solid fa-leaf text-base md:text-lg"></i>
           </div>
-          <span className="text-xl font-black text-slate-900 tracking-tighter">EcoOrient</span>
+          <span className="text-xl md:text-2xl font-black text-ink tracking-tighter">EcoOrient</span>
         </div>
         
         {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-8">
-          <a href="#features" className="text-sm font-bold text-slate-500 hover:text-indigo-600 transition-colors">Vision</a>
-          <a href="#impact" className="text-sm font-bold text-slate-500 hover:text-indigo-600 transition-colors">Impact</a>
+        <div className="hidden md:flex items-center gap-10">
+          <a href="#" className="text-sm font-bold text-ink/50 hover:text-sage transition-colors">Notre Vision</a>
+          <a href="#" className="text-sm font-bold text-ink/50 hover:text-sage transition-colors">La Méthode</a>
           <button 
             onClick={onStart}
-            className="px-6 py-2.5 bg-slate-900 text-white rounded-xl text-sm font-bold hover:bg-indigo-600 transition-all shadow-md"
+            className="px-6 py-3 bg-white border border-ink/10 text-ink rounded-xl text-sm font-bold shadow-sm hover:shadow-md hover:border-ink/20 transition-all"
           >
-            Member Space
+            Se Connecter
           </button>
         </div>
 
-        {/* Mobile Toggle */}
-        <div className="md:hidden flex items-center gap-2">
-          <button 
-            onClick={() => setMobileOpen(!mobileOpen)} 
-            aria-label="menu" 
-            className="w-10 h-10 rounded-lg bg-slate-50 flex items-center justify-center text-slate-700"
-          >
-            <i className={`fa-solid ${mobileOpen ? 'fa-xmark' : 'fa-bars'}`}></i>
-          </button>
-        </div>
+        {/* Mobile Toggle Button */}
+        <button 
+          className="md:hidden text-ink text-2xl p-2"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        >
+          <i className={`fa-solid ${mobileMenuOpen ? 'fa-xmark' : 'fa-bars-staggered'}`}></i>
+        </button>
+
       </div>
 
-      {/* Mobile Menu */}
-      {mobileOpen && (
-        <div className="md:hidden mt-4 pb-6 animate-in slide-in-from-top-2">
-          <div className="flex flex-col gap-3">
-            <a href="#features" className="text-base font-bold text-slate-700 py-2">Vision</a>
-            <a href="#impact" className="text-base font-bold text-slate-700 py-2">Impact</a>
-            <button onClick={onStart} className="w-full text-left px-4 py-3 bg-slate-900 text-white rounded-xl font-bold">Member Space</button>
-          </div>
+      {/* Mobile Menu Dropdown */}
+      {mobileMenuOpen && (
+        <div className="absolute top-full left-0 w-full bg-base-bg border-b border-ink/10 p-6 flex flex-col gap-6 md:hidden shadow-xl shadow-ink/5 animate-in slide-in-from-top-2">
+          <a href="#" className="text-lg font-bold text-ink hover:text-sage transition-colors">Notre Vision</a>
+          <a href="#" className="text-lg font-bold text-ink hover:text-sage transition-colors">La Méthode</a>
+          <button 
+            onClick={() => {
+              setMobileMenuOpen(false);
+              onStart();
+            }}
+            className="w-full py-4 bg-sage text-white rounded-xl text-base font-bold shadow-md"
+          >
+            Se Connecter
+          </button>
         </div>
       )}
     </nav>

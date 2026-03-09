@@ -100,7 +100,7 @@ const Dashboard: React.FC<DashboardProps> = ({ isDark, search = '' }) => {
                     fontWeight: 'bold',
                     padding: '16px'
                   }}
-                  itemStyle={{ fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '1px' }}
+                  itemStyle={{ fontSize: '12px', fontWeight: 'bold' }}
                 />
                 <Bar dataKey="co2" name="CO2 (kg)" fill="#7D9D85" radius={[12, 12, 12, 12]} barSize={24} />
                 <Bar dataKey="sov" name="Souveraineté (%)" fill="#C4B5A2" radius={[12, 12, 12, 12]} barSize={24} />
@@ -121,7 +121,7 @@ const Dashboard: React.FC<DashboardProps> = ({ isDark, search = '' }) => {
             <ResponsiveContainer width="100%" height={300}>
               <RadarChart cx="50%" cy="50%" outerRadius="75%" data={radarData}>
                 <PolarGrid stroke={isDark ? "rgba(248, 247, 242, 0.1)" : "rgba(45, 51, 49, 0.1)"} />
-                <PolarAngleAxis dataKey="subject" fontSize={9} fontWeight={800} tick={{ fill: isDark ? 'rgba(248, 247, 242, 0.7)' : 'rgba(45, 51, 49, 0.7)', textTransform: 'uppercase' }} />
+                <PolarAngleAxis dataKey="subject" fontSize={9} fontWeight={800} tick={{ fill: isDark ? 'rgba(248, 247, 242, 0.7)' : 'rgba(45, 51, 49, 0.7)' }} />
                 <Radar
                   name="Moyenne"
                   dataKey="A"

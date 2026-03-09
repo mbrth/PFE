@@ -1,5 +1,5 @@
 {
-  "name": "ecoorient---ai-e-learning-guide",
+  "name": "eco_orient",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -21,6 +21,7 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.18",
     "@types/node": "^22.14.0",
+    "@types/react": "^19.2.14",
     "@vitejs/plugin-react": "^5.0.0",
     "autoprefixer": "^10.4.24",
     "postcss": "^8.5.6",

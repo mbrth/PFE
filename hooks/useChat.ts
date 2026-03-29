@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { ChatMessage } from '../types';
 import { getOrientationAdvice } from '../services/geminiService';
 import { fetchExternalData } from '../services/externalApi';
-import { MOCKED_COURSES } from '../constants';
+import { useCourses } from './useCourses';
 
 const INITIAL_MESSAGE: ChatMessage = {
   role: 'assistant',
@@ -11,17 +11,15 @@ const INITIAL_MESSAGE: ChatMessage = {
 };
 
 /**
- * Manages the state and operations of the AI Chat interface.
- * Decoupling this logic from the UI component allows for cleaner maintenance
- * and potential reuse of the chat logic in other parts of the application.
+ * Orchestrates AI chat logic, integrating local database courses for context-aware advice.
  */
 export const useChat = () => {
+  const { courses } = useCourses();
   const [messages, setMessages] = useState<ChatMessage[]>([{ ...INITIAL_MESSAGE }]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Ensures the chat automatically scrolls to the latest message for a fluid UX
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTo({
@@ -33,9 +31,9 @@ export const useChat = () => {
 
   /**
    * Processes the user's message and retrieves an AI response.
-   * Integrates external data and local course context for a personalized advice.
+   * Now supports an optional 'context' (e.g. current lesson content).
    */
-  const sendMessage = useCallback(async (text: string = input) => {
+  const sendMessage = useCallback(async (text: string = input, context?: string) => {
     const messageToSend = text.trim();
     if (!messageToSend) return;
 
@@ -50,9 +48,8 @@ export const useChat = () => {
     setIsTyping(true);
 
     try {
-      // Enrichment of the prompt with real-time external data for higher accuracy
       const external = await fetchExternalData(messageToSend);
-      const advice = await getOrientationAdvice(messageToSend, MOCKED_COURSES, external);
+      const advice = await getOrientationAdvice(messageToSend, courses, external, context, messages);
 
       const botMsg: ChatMessage = {
         role: 'assistant',
@@ -66,7 +63,7 @@ export const useChat = () => {
     } finally {
       setIsTyping(false);
     }
-  }, [input]);
+  }, [input, courses]);
 
   /**
    * Resets the conversation to its initial state.

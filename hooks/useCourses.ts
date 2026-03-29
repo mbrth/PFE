@@ -1,19 +1,35 @@
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { MOCKED_COURSES } from '../constants';
 import { Course } from '../types';
+import { db } from '../services/db';
 
 /**
  * Provides filtered course data based on search criteria.
- * This centralization ensures consistent filtering logic across the dashboard and catalog,
- * while optimizing performance through memoization.
+ * Supports role-based fetching to show non-validated courses to managers.
  */
-export const useCourses = (search: string = '') => {
+export const useCourses = (search: string = '', role?: string) => {
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const loadCourses = async () => {
+      setLoading(true);
+      const data = await db.getCourses(role);
+      if (data) {
+        setCourses(data);
+      }
+      setLoading(false);
+    };
+
+    loadCourses();
+  }, [role]);
+
   const filteredCourses = useMemo(() => {
     const query = search.trim().toLowerCase();
     
-    if (!query) return MOCKED_COURSES;
+    if (!query) return courses;
 
-    return MOCKED_COURSES.filter((course: Course) => {
+    return courses.filter((course: Course) => {
       return (
         course.title.toLowerCase().includes(query) ||
         course.provider.toLowerCase().includes(query) ||
@@ -21,11 +37,12 @@ export const useCourses = (search: string = '') => {
         course.skills.some(skill => skill.toLowerCase().includes(query))
       );
     });
-  }, [search]);
+  }, [search, courses]);
 
   return {
     courses: filteredCourses,
-    totalCount: MOCKED_COURSES.length,
+    loading,
+    totalCount: courses.length,
     filteredCount: filteredCourses.length
   };
 };

@@ -1,61 +1,77 @@
-import { useState, useCallback } from 'react';
-
-type Tab = 'catalog' | 'dashboard' | 'chat';
+import { useState, useCallback, useEffect } from 'react';
+import { db } from '../services/db';
+import { UserRole } from '../types';
 
 /**
- * Orchestrates the application's global session and navigation state.
- * This hook isolates the business logic of user lifecycle (auth, onboarding, logout)
- * from the layout-level concerns of App.tsx.
+ * Orchestrates user lifecycle (auth, profile, session).
+ * Decoupled from navigation to maintain clear responsibilities.
  */
 export const useAppSession = () => {
-  // User Authentication and Identity
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [userName, setUserName] = useState('');
+  const [userRole, setUserRole] = useState<UserRole>('user');
   const [persona, setPersona] = useState('Apprenant Engagé');
-  
-  // App Navigation and Search
-  const [activeTab, setActiveTab] = useState<Tab>('dashboard');
-  const [search, setSearch] = useState('');
 
-  /**
-   * Finalizes the authentication process by deciding if the user 
-   * needs initial guidance (onboarding) or direct access.
-   */
-  const handleAuthSuccess = useCallback((isNewUser: boolean, name: string) => {
-    setShowAuthModal(false);
-    setUserName(name);
-    if (isNewUser) {
-      setShowOnboarding(true);
-    } else {
-      setIsLoggedIn(true);
-    }
+  useEffect(() => {
+    const initializeSession = async () => {
+      try {
+        const { data: { session } } = await db.auth.getSession();
+        if (session?.user) {
+          setIsLoggedIn(true);
+          const profile = session.user;
+          setUserName(profile.fullName || profile.full_name || '');
+          setPersona(profile.persona || 'Apprenant Engagé');
+          setUserRole((profile.role as UserRole) || 'user');
+        }
+      } catch (err) {
+        console.error("Session initialization failed:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    initializeSession();
   }, []);
 
-  /**
-   * Transition from the discovery phase to the main dashboard
-   * once the user's eco-profile has been calculated.
-   */
-  const handleOnboardingComplete = useCallback((generatedPersona: string) => {
+  const handleAuthSuccess = useCallback(async (isNewUser: boolean, name: string) => {
+    setTimeout(async () => {
+      const { data: { session } } = await db.auth.getSession();
+      if (session?.user) {
+        setUserName(session.user.fullName || session.user.full_name || name);
+        setPersona(session.user.persona || 'Apprenant Engagé');
+        setUserRole((session.user.role as UserRole) || 'user');
+        setIsLoggedIn(true);
+        setShowAuthModal(false);
+        if (isNewUser) setShowOnboarding(true);
+      }
+    }, 100);
+  }, []);
+
+  const handleOnboardingComplete = useCallback(async (generatedPersona: string) => {
     setPersona(generatedPersona);
     setShowOnboarding(false);
     setIsLoggedIn(true);
-    setActiveTab('dashboard');
+
+    const { data: { session } } = await db.auth.getSession();
+    if (session?.user) {
+      await db.updateUserProfile(session.user.id, { persona: generatedPersona });
+    }
   }, []);
 
-  /**
-   * Cleans up the current session and redirects the user 
-   * to the starting point.
-   */
-  const handleLogout = useCallback(() => {
+  const handleLogout = useCallback(async () => {
+    await db.auth.logout();
     setIsLoggedIn(false);
-    setActiveTab('dashboard');
+    setUserRole('user');
+    setUserName('');
   }, []);
 
   return {
     isLoggedIn,
+    loading,
+    userRole,
     showOnboarding,
     showAuthModal,
     setShowAuthModal,
@@ -63,10 +79,6 @@ export const useAppSession = () => {
     setIsProfileModalOpen,
     userName,
     persona,
-    activeTab,
-    setActiveTab,
-    search,
-    setSearch,
     handleAuthSuccess,
     handleOnboardingComplete,
     handleLogout

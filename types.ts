@@ -30,6 +30,17 @@ export interface SovereigntyScoring {
   sovereigntyScore: number;
 }
 
+export interface CourseLesson {
+  title: string;
+  content: string;
+  duration?: string;
+}
+
+export interface CourseModule {
+  title: string;
+  lessons: CourseLesson[];
+}
+
 export interface Course {
   id: string;
   title: string;
@@ -42,14 +53,19 @@ export interface Course {
   ecoScore: EcologicalScoring;
   sovereignty: SovereigntyScoring;
   rating: number;
+  isValidated: boolean;
+  authorId?: string;
+  modules?: CourseModule[];
 }
 
+export type UserRole = 'user' | 'instructor' | 'admin';
+
 export interface UserProfile {
-  name: string;
-  currentSkills: string[];
-  targetJob: string;
-  priority: 'ecology' | 'sovereignty' | 'performance';
-  personaTitle?: string;
+  id: string;
+  full_name: string;
+  persona: string;
+  role: UserRole;
+  updated_at?: string;
 }
 
 export interface ChatMessage {

@@ -1,0 +1,83 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid()) @db.Uuid
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now()) @map("created_at")
+  profile   Profile?
+  courses   Course[]
+  carbonStats UserCarbonStats?
+  progress    UserProgress[]
+
+  @@map("users")
+}
+
+model Profile {
+  id        String   @id @db.Uuid
+  user      User     @relation(fields: [id], references: [id], onDelete: Cascade)
+  fullName  String?  @map("full_name")
+  persona   String   @default("Apprenant Engagé")
+  role      String   @default("user")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("profiles")
+}
+
+/**
+ * Tracks lesson completion for each user.
+ * Enables the "resume where you left off" feature.
+ */
+model UserProgress {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courseId  String   @map("course_id")
+  lessonId  String   @map("lesson_id") // Format: "mIdx-lIdx"
+  completed Boolean  @default(true)
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([userId, courseId, lessonId])
+  @@map("user_progress")
+}
+
+model UserCarbonStats {
+  id              String   @id @default(uuid()) @db.Uuid
+  userId          String   @unique @db.Uuid @map("user_id")
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  totalConsumed   Float    @default(0)
+  totalSaved      Float    @default(0)
+  aiRequestsCount Int      @default(0)
+  dataTransferred Float    @default(0)
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@map("user_carbon_stats")
+}
+
+model Course {
+  id          String   @id @default(uuid())
+  title       String
+  provider    String
+  category    String
+  duration    String
+  level       String
+  description String?
+  rating      Float?   @default(0)
+  skills      String[]
+  ecoScore    Json     @map("eco_score")
+  sovereignty Json
+  modules     Json?    @default("[]")
+  isValidated Boolean  @default(false) @map("is_validated")
+  authorId    String?  @db.Uuid @map("author_id")
+  author      User?    @relation(fields: [authorId], references: [id])
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("courses")
+}

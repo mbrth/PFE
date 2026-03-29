@@ -5,18 +5,30 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "server:start": "tsx server/index.ts",
+    "dev:all": "concurrently \"npm run dev\" \"npm run server:start\"",
     "build": "vite build",
     "preview": "vite preview",
-    "server:install": "cd server && npm install",
-    "server:start": "node server/index.js"
+    "server:install": "cd server && npm install"
+  },
+  "prisma": {
+    "schema": "server/prisma/schema.prisma"
   },
   "dependencies": {
     "@fontsource/inter": "^5.2.8",
     "@fortawesome/fontawesome-free": "^7.2.0",
     "@google/genai": "^1.38.0",
+    "@prisma/adapter-pg": "^7.6.0",
+    "@prisma/client": "6.19.2",
+    "@tailwindcss/typography": "^0.5.19",
+    "@types/react-syntax-highlighter": "^15.5.13",
+    "pg": "^8.20.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "recharts": "^3.7.0"
+    "react-markdown": "^10.1.0",
+    "react-syntax-highlighter": "^16.1.1",
+    "recharts": "^3.7.0",
+    "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.18",
@@ -24,8 +36,11 @@
     "@types/react": "^19.2.14",
     "@vitejs/plugin-react": "^5.0.0",
     "autoprefixer": "^10.4.24",
+    "concurrently": "^9.2.1",
     "postcss": "^8.5.6",
+    "prisma": "6.19.2",
     "tailwindcss": "^4.1.18",
+    "tsx": "^4.21.0",
     "typescript": "~5.8.2",
     "vite": "^6.2.0"
   }

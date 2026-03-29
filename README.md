@@ -1,20 +1,58 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
 
-# Run and deploy your AI Studio app
+# 🌿 EcoOrient — Green E-Learning Platform
 
-This contains everything you need to run your app locally.
+EcoOrient is a high-end, low-carbon educational platform designed to train the next generation of responsible developers. It features a real-time carbon impact engine, a sovereign cloud catalog, and a context-aware AI Mentor.
 
-View your app in AI Studio: https://ai.studio/apps/drive/1qWjikvcVUzWnbFfiDQ7Krn0hIO19jcfT
+## 🚀 Quick Start (Local Development)
 
-## Run Locally
+### 1. Prerequisites
+- **Node.js** (v18+)
+- **Docker Desktop** (for PostgreSQL)
+- **Groq API Key** (Free on [Groq Cloud](https://console.groq.com/))
 
-**Prerequisites:**  Node.js
+### 2. Setup Database
+Run the following command to start your local PostgreSQL instance:
+```bash
+docker run --name dev-postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 -v pgdata:/var/lib/postgresql/data -d postgres:latest
+```
 
+### 3. Environment Variables
+1. Create a `.env` file at the root:
+   ```env
+   VITE_API_URL=/api
+   VITE_API_PROXY=/api/gemini
+   DATABASE_URL="postgresql://postgres:postgres@localhost:5432/ecoorient?schema=public"
+   ```
+2. Create a `server/.env` file:
+   ```env
+   PORT=3001
+   JWT_SECRET=generate_any_long_string
+   DATABASE_URL="postgresql://postgres:postgres@localhost:5432/ecoorient?schema=public"
+   GROQ_API_KEY=your_key_here
+   ```
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+### 4. Install & Launch
+```bash
+# Install root dependencies
+npm install
+
+# Initialize Database Schema & Seed Data
+npx prisma db push
+node server/prisma/seed.js
+
+# Launch Frontend & Backend simultaneously
+npm run dev:all
+```
+
+## 🏗️ Architecture
+- **Frontend**: React 19 + TypeScript + Tailwind CSS 4
+- **Backend**: Node.js Express (TypeScript)
+- **ORM**: Prisma
+- **Database**: PostgreSQL
+- **AI**: Groq LPU (Llama 3.1 8B) for ultra-fast, low-carbon inference
+
+## 🍃 Key Features
+- **Carbon Tracking**: Real-time calculation of grams of CO2e saved vs standard platforms.
+- **Sovereign Curriculum**: Training modules focused on European cloud and ethical tech.
+- **Contextual AI**: A mentor that knows exactly which lesson you are reading.
+- **Storytelling UX**: A "Notion-like" immersive reading experience.

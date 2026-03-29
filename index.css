@@ -1,57 +1,69 @@
 @import "tailwindcss";
 
 @theme {
-  --color-base-bg: #F8F7F2;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Space Grotesk", ui-serif, Georgia, serif;
+  
   --color-sage: #7D9D85;
-  --color-sage-light: #DCE5DE;
-  --color-sand: #E9DCC9;
-  --color-clay: #D9A08B;
+  --color-sage-light: #A3B899;
+  --color-earth: #C4B5A2;
+  --color-sand: #E2D7C1;
   --color-ink: #2D3331;
+  --color-base-bg: #F8F7F2;
 }
 
-@layer base {
-  body {
-    @apply antialiased bg-base-bg text-ink selection:bg-sage-light;
+/* Custom Table Styles for Markdown */
+.prose table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 2rem 0;
+  border: 2px solid rgba(45, 51, 49, 0.05);
+  border-radius: 1.5rem;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+}
+
+.prose thead {
+  background-color: #F8F7F2;
+}
+
+.prose th {
+  padding: 1.25rem 1.5rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: rgba(45, 51, 49, 0.4);
+}
+
+.prose td {
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid rgba(45, 51, 49, 0.05);
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: rgba(45, 51, 49, 0.8);
+}
+
+.prose tr:hover td {
+  background-color: rgba(125, 157, 133, 0.02);
+}
+
+/* Utils */
+@layer utilities {
+  .card-modern {
+    @apply bg-white p-8 md:p-12 rounded-[3rem] shadow-xl shadow-ink/[0.02] border border-ink/5 transition-all hover:shadow-2xl hover:shadow-ink/[0.05];
   }
-}
+  
+  .title-main {
+    @apply text-5xl md:text-7xl font-black text-ink tracking-tighter leading-[0.9];
+  }
 
-/* Nouvelles utilités pour des icônes vivantes */
-@utility icon-circle {
-  @apply w-16 h-16 rounded-full flex items-center justify-center transition-all duration-500 bg-white shadow-sm border border-ink/5 text-2xl;
-}
+  .badge-eco {
+    @apply inline-flex items-center gap-2 px-4 py-2 bg-sage/10 text-sage rounded-full text-[10px] font-black uppercase tracking-widest;
+  }
 
-@utility icon-float {
-  @apply absolute opacity-10 text-4xl pointer-events-none;
-}
-
-@utility btn-main {
-  @apply px-10 py-5 bg-ink text-white rounded-2xl font-black hover:bg-sage transition-all duration-300 flex items-center gap-3 shadow-xl shadow-ink/10;
-}
-
-@utility card-eco {
-  @apply bg-white border border-ink/5 rounded-[3rem] p-10 transition-all duration-500 hover:shadow-xl hover:shadow-sage/5;
-}
-
-@utility card-modern {
-  @apply p-8 md:p-12 rounded-[3rem] shadow-sm transition-all duration-500;
-}
-
-@utility container-section {
-  @apply max-w-7xl mx-auto px-6 md:px-12;
-}
-
-@utility section-header {
-  @apply flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 mb-12 border-b border-ink/5 pb-8;
-}
-
-@utility title-main {
-  @apply text-4xl md:text-5xl font-black tracking-tight;
-}
-
-@utility text-muted {
-  @apply text-ink/50 font-medium;
-}
-
-@utility badge-eco {
-  @apply inline-flex items-center gap-2 px-3 py-1 bg-sage/10 text-sage font-bold text-[10px] uppercase tracking-widest rounded-lg;
+  .input-modern {
+    @apply w-full p-5 bg-base-bg rounded-2xl font-bold text-ink border-2 border-transparent focus:border-sage outline-none transition-all;
+  }
 }
